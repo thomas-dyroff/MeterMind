@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MeterMind — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --color-primary-900:#0D3B36;
+    --color-primary-700:#0F5C52;
+    --color-primary-500:#178F7D;
+    --color-teal-600:#1A7A94;
+    --color-cyan-500:#2BA8C4;
+
+    --color-ink-900:#10201D;
+    --color-ink-600:#5B6B68;
+    --color-ink-400:#94A19E;
+    --color-surface:#FFFFFF;
+    --color-bg:#F6F8F7;
+    --color-border:#E7ECEA;
+
+    --color-positive-bg:#DCF3E7;
+    --color-positive-text:#1E7A4C;
+    --color-neutral-bg:#FCEFD8;
+    --color-neutral-text:#A8721C;
+    --color-negative-bg:#FBE2E1;
+    --color-negative-text:#C23B33;
+
+    --color-strom:#0F5C52;
+    --color-gas:#1A7A94;
+    --color-wasser:#2BA8C4;
+
+    --radius-card:24px;
+    --radius-badge:999px;
+    --radius-icon:999px;
+    --radius-cta:20px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--color-bg);
+    color:var(--color-ink-900);
+    font-family:'Inter',sans-serif;
+    font-variant-numeric:tabular-nums;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3,.display{
+    font-family:'Plus Jakarta Sans',sans-serif;
+    font-weight:800;
+    margin:0;
+  }
+
+  a{color:inherit;}
+
+  /* ===== Layout shell ===== */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,248,247,0.9);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--color-border);
+  }
+  .topbar-inner{
+    max-width:1180px; margin:0 auto;
+    padding:16px 32px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand-mark{
+    width:32px; height:32px; border-radius:10px;
+    background:var(--color-primary-700);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .brand-name{font-size:18px; letter-spacing:-0.01em;}
+  .topbar nav{display:flex; gap:24px;}
+  .topbar nav a{
+    font-size:13.5px; font-weight:600; color:var(--color-ink-600);
+    text-decoration:none; padding:6px 0;
+  }
+  .topbar nav a:hover{color:var(--color-primary-700);}
+
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+
+  .hero{
+    padding:64px 0 48px;
+    border-bottom:1px solid var(--color-border);
+  }
+  .eyebrow{
+    font-size:12.5px; font-weight:700; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--color-primary-700);
+    margin-bottom:14px; display:block;
+  }
+  .hero h1{font-size:44px; line-height:1.08; letter-spacing:-0.015em; max-width:680px;}
+  .hero p{
+    font-size:16px; color:var(--color-ink-600); max-width:560px;
+    margin-top:16px; line-height:1.6;
+  }
+
+  section.block{padding:56px 0; border-bottom:1px solid var(--color-border);}
+  section.block:last-of-type{border-bottom:none;}
+  .block-head{margin-bottom:28px;}
+  .block-head h2{font-size:24px; letter-spacing:-0.01em;}
+  .block-head p{font-size:14px; color:var(--color-ink-600); margin-top:6px; max-width:620px;}
+
+  /* ===== Color swatches ===== */
+  .swatch-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:14px;
+  }
+  .swatch{
+    border:1px solid var(--color-border); border-radius:16px;
+    overflow:hidden; background:var(--color-surface);
+  }
+  .swatch-color{height:84px;}
+  .swatch-meta{padding:12px 14px;}
+  .swatch-meta .name{font-size:13px; font-weight:700;}
+  .swatch-meta .hex{font-size:12.5px; color:var(--color-ink-600); margin-top:2px;}
+  .swatch-meta code{
+    font-size:11px; color:var(--color-ink-400); display:block; margin-top:6px;
+    font-family:'SFMono-Regular',Consolas,monospace;
+  }
+
+  /* ===== Type specimens ===== */
+  .type-row{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:24px; padding:18px 0; border-bottom:1px solid var(--color-border);
+  }
+  .type-row:last-child{border-bottom:none;}
+  .type-sample{font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; color:var(--color-ink-900);}
+  .type-row.body-row .type-sample{font-family:'Inter',sans-serif; font-weight:400;}
+  .type-meta{flex-shrink:0; text-align:right;}
+  .type-meta .label{font-size:13px; font-weight:600; color:var(--color-ink-900);}
+  .type-meta .spec{font-size:12px; color:var(--color-ink-400); margin-top:2px;}
+
+  /* ===== Component showcase: Metric Card ===== */
+  .phone-frame{
+    max-width:380px; margin:0 auto;
+    background:var(--color-surface);
+    border:1px solid var(--color-border);
+    border-radius:32px;
+    padding:20px;
+    box-shadow:0 20px 60px -20px rgba(13,59,54,0.18);
+  }
+  .card-stack{display:flex; flex-direction:column; gap:16px;}
+
+  .metric-card{
+    background:var(--color-surface);
+    border:1px solid var(--color-border);
+    border-radius:var(--radius-card);
+    padding:20px;
+  }
+  .metric-top{display:flex; align-items:flex-start; justify-content:space-between; gap:12px;}
+  .metric-id{display:flex; gap:12px; align-items:center;}
+  .icon-circle{
+    width:44px; height:44px; border-radius:var(--radius-icon);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .icon-circle svg{width:20px; height:20px;}
+  .metric-id .title{font-size:18px; font-weight:700; font-family:'Plus Jakarta Sans',sans-serif;}
+  .metric-id .subtitle{font-size:12.5px; color:var(--color-ink-600); margin-top:1px;}
+
+  .badge{
+    display:inline-flex; align-items:center; gap:4px;
+    padding:6px 10px; border-radius:var(--radius-badge);
+    font-size:12.5px; font-weight:700; white-space:nowrap;
+  }
+  .badge.positive{background:var(--color-positive-bg); color:var(--color-positive-text);}
+  .badge.neutral{background:var(--color-neutral-bg); color:var(--color-neutral-text);}
+  .badge.negative{background:var(--color-negative-bg); color:var(--color-negative-text);}
+  .badge-stack{display:flex; flex-direction:column; align-items:flex-end; gap:2px;}
+  .badge-stack .badge-caption{font-size:10.5px; color:var(--color-ink-400); font-weight:500;}
+
+  .metric-body{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    margin-top:18px; gap:12px;
+  }
+  .metric-value{font-size:32px; font-weight:800; font-family:'Plus Jakarta Sans',sans-serif; line-height:1;}
+  .metric-value .unit{font-size:14px; font-weight:600; color:var(--color-ink-600); margin-left:4px;}
+  .metric-meta{font-size:12px; color:var(--color-ink-400); margin-top:8px;}
+  .sparkline{flex-shrink:0;}
+
+  .metric-divider{height:1px; background:var(--color-border); margin:18px 0 14px;}
+  .metric-footer{display:flex;}
+  .metric-footer-col{flex:1; padding:0 4px;}
+  .metric-footer-col + .metric-footer-col{border-left:1px solid var(--color-border); padding-left:16px; margin-left:8px;}
+  .metric-footer-col .label{font-size:12px; color:var(--color-ink-600);}
+  .metric-footer-col .value{font-size:17px; font-weight:700; margin-top:4px;}
+
+  /* Insight card */
+  .insight-card{
+    background:#E4F2F0; border-radius:var(--radius-card);
+    padding:18px 20px; display:flex; gap:14px; align-items:flex-start;
+  }
+  .insight-card .icon-circle{background:var(--color-primary-900);}
+  .insight-body{flex:1;}
+  .insight-body .eyebrow{font-size:11px; margin-bottom:4px; color:var(--color-primary-700);}
+  .insight-body h3{font-size:17px; font-weight:700;}
+  .insight-body p{font-size:13.5px; color:var(--color-ink-600); margin:6px 0 0; line-height:1.5;}
+  .insight-chevron{color:var(--color-ink-400); flex-shrink:0; margin-top:4px;}
+  .insight-tip{
+    display:flex; align-items:center; gap:8px; margin-top:14px;
+    font-size:13px; color:var(--color-primary-900); font-weight:600;
+  }
+
+  /* CTA bar */
+  .cta-bar{
+    background:var(--color-primary-900); border-radius:var(--radius-cta);
+    padding:16px 18px; display:flex; align-items:center; gap:14px;
+    color:#fff;
+  }
+  .cta-bar .icon-circle{background:rgba(255,255,255,0.15);}
+  .cta-text{flex:1;}
+  .cta-text .title{font-size:15px; font-weight:700;}
+  .cta-text .subtitle{font-size:12.5px; color:rgba(255,255,255,0.65); margin-top:2px;}
+
+  /* Bottom nav */
+  .bottom-nav{
+    display:flex; justify-content:space-around;
+    padding-top:18px; margin-top:18px; border-top:1px solid var(--color-border);
+  }
+  .nav-item{display:flex; flex-direction:column; align-items:center; gap:5px; color:var(--color-ink-400);}
+  .nav-item.active{color:var(--color-primary-700);}
+  .nav-item span{font-size:11px; font-weight:600;}
+  .nav-item .dot{width:4px; height:4px; border-radius:50%; background:var(--color-primary-700);}
+  .nav-item .dot.hidden{visibility:hidden;}
+
+  /* ===== Spacing scale ===== */
+  .space-row{display:flex; align-items:center; gap:16px; padding:10px 0;}
+  .space-bar{background:var(--color-primary-500); border-radius:4px; height:14px;}
+  .space-row .label{font-size:13px; color:var(--color-ink-600); width:90px; flex-shrink:0;}
+
+  /* ===== Radius scale ===== */
+  .radius-grid{display:flex; gap:20px; flex-wrap:wrap;}
+  .radius-sample{text-align:center;}
+  .radius-box{
+    width:88px; height:88px; background:var(--color-surface);
+    border:1.5px solid var(--color-primary-500);
+  }
+  .radius-sample .label{font-size:12px; color:var(--color-ink-600); margin-top:8px;}
+
+  /* Icon set */
+  .icon-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(96px,1fr)); gap:12px;}
+  .icon-tile{
+    border:1px solid var(--color-border); border-radius:14px;
+    padding:16px 8px; text-align:center; background:var(--color-surface);
+  }
+  .icon-tile svg{width:24px; height:24px; color:var(--color-primary-700);}
+  .icon-tile .label{font-size:11px; color:var(--color-ink-600); margin-top:8px;}
+
+  footer{padding:36px 0 60px; text-align:center;}
+  footer p{font-size:12.5px; color:var(--color-ink-400);}
+
+  @media(max-width:640px){
+    .topbar nav{display:none;}
+    .hero h1{font-size:32px;}
+    .wrap{padding:0 18px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 11-13h-7l1-7z"/></svg>
+      </div>
+      <span class="brand-name">MeterMind</span>
+    </div>
+    <nav>
+      <a href="#colors">Farben</a>
+      <a href="#type">Typografie</a>
+      <a href="#spacing">Spacing</a>
+      <a href="#components">Komponenten</a>
+      <a href="#icons">Icons</a>
+    </nav>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Design System · v1.0</span>
+    <h1>Klare Zahlen, ruhige Flächen.</h1>
+    <p>Das visuelle System für MeterMind — eine App, die Strom-, Gas- und Wasserverbrauch auf einen Blick verständlich macht. Jede Farbe, Form und Type-Entscheidung dient einem Ziel: dem Zählerstand Vorrang geben.</p>
+  </div>
+</div>
+
+<!-- COLORS -->
+<section class="block" id="colors">
+  <div class="wrap">
+    <div class="block-head">
+      <h2>Farben</h2>
+      <p>Primärpalette in dunklem Petrol/Teal, neutrale Grautöne für Text und Flächen, sowie Statusfarben für Trends.</p>
+    </div>
+
+    <h3 style="font-size:14px;font-family:'Inter';font-weight:700;margin-bottom:12px;color:var(--color-ink-600);">Primär</h3>
+    <div class="swatch-grid" style="margin-bottom:28px;">
+      <div class="swatch"><div class="swatch-color" style="background:#0D3B36"></div><div class="swatch-meta"><div class="name">Primary 900</div><div class="hex">#0D3B36</div><code>--color-primary-900</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#0F5C52"></div><div class="swatch-meta"><div class="name">Primary 700</div><div class="hex">#0F5C52</div><code>--color-primary-700</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#178F7D"></div><div class="swatch-meta"><div class="name">Primary 500</div><div class="hex">#178F7D</div><code>--color-primary-500</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#1A7A94"></div><div class="swatch-meta"><div class="name">Teal 600 (Gas)</div><div class="hex">#1A7A94</div><code>--color-teal-600</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#2BA8C4"></div><div class="swatch-meta"><div class="name">Cyan 500 (Wasser)</div><div class="hex">#2BA8C4</div><code>--color-cyan-500</code></div></div>
+    </div>
+
+    <h3 style="font-size:14px;font-family:'Inter';font-weight:700;margin-bottom:12px;color:var(--color-ink-600);">Neutral</h3>
+    <div class="swatch-grid" style="margin-bottom:28px;">
+      <div class="swatch"><div class="swatch-color" style="background:#10201D"></div><div class="swatch-meta"><div class="name">Ink 900</div><div class="hex">#10201D</div><code>--color-ink-900</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#5B6B68"></div><div class="swatch-meta"><div class="name">Ink 600</div><div class="hex">#5B6B68</div><code>--color-ink-600</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#94A19E"></div><div class="swatch-meta"><div class="name">Ink 400</div><div class="hex">#94A19E</div><code>--color-ink-400</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F6F8F7;border-bottom:1px solid #E7ECEA"></div><div class="swatch-meta"><div class="name">Background</div><div class="hex">#F6F8F7</div><code>--color-bg</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#E7ECEA"></div><div class="swatch-meta"><div class="name">Border</div><div class="hex">#E7ECEA</div><code>--color-border</code></div></div>
+    </div>
+
+    <h3 style="font-size:14px;font-family:'Inter';font-weight:700;margin-bottom:12px;color:var(--color-ink-600);">Status / Trend</h3>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#DCF3E7"></div><div class="swatch-meta"><div class="name">Positive BG</div><div class="hex">#DCF3E7</div><code>--color-positive-bg</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#1E7A4C"></div><div class="swatch-meta"><div class="name">Positive Text</div><div class="hex">#1E7A4C</div><code>--color-positive-text</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#FCEFD8"></div><div class="swatch-meta"><div class="name">Neutral BG</div><div class="hex">#FCEFD8</div><code>--color-neutral-bg</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#A8721C"></div><div class="swatch-meta"><div class="name">Neutral Text</div><div class="hex">#A8721C</div><code>--color-neutral-text</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#FBE2E1"></div><div class="swatch-meta"><div class="name">Negative BG</div><div class="hex">#FBE2E1</div><code>--color-negative-bg</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#C23B33"></div><div class="swatch-meta"><div class="name">Negative Text</div><div class="hex">#C23B33</div><code>--color-negative-text</code></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TYPE -->
+<section class="block" id="type">
+  <div class="wrap">
+    <div class="block-head">
+      <h2>Typografie</h2>
+      <p>Plus Jakarta Sans (800) für Display & Zählerstände, Inter für UI und Fließtext. Tabular Numbers überall, wo Zahlen erscheinen.</p>
+    </div>
+
+    <div class="type-row"><div class="type-sample" style="font-size:44px;">MeterMind</div><div class="type-meta"><div class="label">App-Titel</div><div class="spec">Plus Jakarta Sans · 800 · 32–44px</div></div></div>
+    <div class="type-row"><div class="type-sample" style="font-size:36px;">4.758<span style="font-size:16px;font-weight:600;color:var(--color-ink-600);margin-left:6px;">kWh</span></div><div class="type-meta"><div class="label">Zählerstand</div><div class="spec">Plus Jakarta Sans · 800 · 36px</div></div></div>
+    <div class="type-row"><div class="type-sample" style="font-size:19px;">Strom</div><div class="type-meta"><div class="label">Karten-Titel</div><div class="spec">Plus Jakarta Sans · 700 · 19px</div></div></div>
+    <div class="type-row body-row"><div class="type-sample" style="font-size:15px;color:var(--color-ink-600);">Zählerstand</div><div class="type-meta"><div class="label">Sektionslabel</div><div class="spec">Inter · 500 · 13px</div></div></div>
+    <div class="type-row body-row"><div class="type-sample" style="font-size:15px;max-width:420px;">Dein Stromverbrauch ist im Vergleich zum Vormonat um 8&nbsp;% gesunken.</div><div class="type-meta"><div class="label">Body</div><div class="spec">Inter · 400 · 15px / 1.5</div></div></div>
+    <div class="type-row body-row"><div class="type-sample" style="font-size:12.5px;color:var(--color-ink-400);">Letzte Eingabe: 20.05.2025</div><div class="type-meta"><div class="label">Meta / Caption</div><div class="spec">Inter · 500 · 12.5px</div></div></div>
+  </div>
+</section>
+
+<!-- SPACING -->
+<section class="block" id="spacing">
+  <div class="wrap">
+    <div class="block-head">
+      <h2>Spacing & Radius</h2>
+      <p>Basis-Einheit 4px. Großzügige Kartenrundung (24px) kontrastiert mit präziser, dichter Datenpräsentation im Inneren.</p>
+    </div>
+
+    <div style="display:flex; gap:64px; flex-wrap:wrap;">
+      <div style="min-width:260px;">
+        <div class="space-row"><span class="label">4 · xs</span><div class="space-bar" style="width:4px;"></div></div>
+        <div class="space-row"><span class="label">8 · sm</span><div class="space-bar" style="width:8px;"></div></div>
+        <div class="space-row"><span class="label">12 · base</span><div class="space-bar" style="width:12px;"></div></div>
+        <div class="space-row"><span class="label">16 · md</span><div class="space-bar" style="width:16px;"></div></div>
+        <div class="space-row"><span class="label">20 · lg</span><div class="space-bar" style="width:20px;"></div></div>
+        <div class="space-row"><span class="label">24 · xl</span><div class="space-bar" style="width:24px;"></div></div>
+        <div class="space-row"><span class="label">32 · 2xl</span><div class="space-bar" style="width:32px;"></div></div>
+        <div class="space-row"><span class="label">40 · 3xl</span><div class="space-bar" style="width:40px;"></div></div>
+      </div>
+
+      <div class="radius-grid">
+        <div class="radius-sample"><div class="radius-box" style="border-radius:24px;"></div><div class="label">Card · 24px</div></div>
+        <div class="radius-sample"><div class="radius-box" style="border-radius:20px;"></div><div class="label">CTA · 20px</div></div>
+        <div class="radius-sample"><div class="radius-box" style="border-radius:14px;"></div><div class="label">Tile · 14px</div></div>
+        <div class="radius-sample"><div class="radius-box" style="border-radius:999px;"></div><div class="label">Pill · full</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPONENTS -->
+<section class="block" id="components">
+  <div class="wrap">
+    <div class="block-head">
+      <h2>Komponenten</h2>
+      <p>Live-Beispiele im mobilen Rahmen — Metric Cards für die drei Versorgungsarten, Insight-Karte und CTA.</p>
+    </div>
+
+    <div class="phone-frame">
+      <div class="card-stack">
+
+        <!-- Strom -->
+        <div class="metric-card">
+          <div class="metric-top">
+            <div class="metric-id">
+              <div class="icon-circle" style="background:var(--color-strom);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 11-13h-7l1-7z"/></svg>
+              </div>
+              <div><div class="title">Strom</div><div class="subtitle">Zählerstand</div></div>
+            </div>
+            <div class="badge-stack">
+              <div class="badge positive">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                -8%
+              </div>
+              <span class="badge-caption">vs. Vormonat</span>
+            </div>
+          </div>
+          <div class="metric-body">
+            <div>
+              <div class="metric-value">4.758<span class="unit">kWh</span></div>
+              <div class="metric-meta">Letzte Eingabe: 20.05.2025</div>
+            </div>
+            <svg class="sparkline" width="110" height="40" viewBox="0 0 110 40">
+              <polyline points="0,12 14,16 28,14 42,20 56,18 70,24 84,22 98,28 110,30" fill="none" stroke="var(--color-strom)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="110" cy="30" r="3.5" fill="var(--color-strom)"/>
+            </svg>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-footer">
+            <div class="metric-footer-col"><div class="label">Kosten (Mai)</div><div class="value" style="color:var(--color-strom);">62,34&nbsp;€</div></div>
+            <div class="metric-footer-col"><div class="label">Prognose (Monat)</div><div class="value">78,00&nbsp;€</div></div>
+          </div>
+        </div>
+
+        <!-- Gas -->
+        <div class="metric-card">
+          <div class="metric-top">
+            <div class="metric-id">
+              <div class="icon-circle" style="background:var(--color-gas);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0011 17a2.5 2.5 0 002.5-2.5c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7.5 7.5 0 11-15 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>
+              </div>
+              <div><div class="title">Gas</div><div class="subtitle">Zählerstand</div></div>
+            </div>
+            <div class="badge-stack">
+              <div class="badge neutral">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg>
+                ±0%
+              </div>
+              <span class="badge-caption">vs. Vormonat</span>
+            </div>
+          </div>
+          <div class="metric-body">
+            <div>
+              <div class="metric-value">12.345<span class="unit">kWh</span></div>
+              <div class="metric-meta">Letzte Eingabe: 20.05.2025</div>
+            </div>
+            <svg class="sparkline" width="110" height="40" viewBox="0 0 110 40">
+              <polyline points="0,22 14,18 28,24 42,14 56,20 70,12 84,18 98,10 110,12" fill="none" stroke="var(--color-gas)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="110" cy="12" r="3.5" fill="var(--color-gas)"/>
+            </svg>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-footer">
+            <div class="metric-footer-col"><div class="label">Kosten (Mai)</div><div class="value" style="color:var(--color-gas);">87,21&nbsp;€</div></div>
+            <div class="metric-footer-col"><div class="label">Prognose (Monat)</div><div class="value">88,00&nbsp;€</div></div>
+          </div>
+        </div>
+
+        <!-- Wasser -->
+        <div class="metric-card">
+          <div class="metric-top">
+            <div class="metric-id">
+              <div class="icon-circle" style="background:var(--color-wasser);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69s5.66 6.07 5.66 10.31A5.66 5.66 0 1112 7.34a5.66 5.66 0 015.66 5.66"/><path d="M6.34 13a5.66 5.66 0 005.66 5.66"/></svg>
+              </div>
+              <div><div class="title">Wasser</div><div class="subtitle">Zählerstand</div></div>
+            </div>
+            <div class="badge-stack">
+              <div class="badge positive">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                -12%
+              </div>
+              <span class="badge-caption">vs. Vormonat</span>
+            </div>
+          </div>
+          <div class="metric-body">
+            <div>
+              <div class="metric-value">26,8<span class="unit">m³</span></div>
+              <div class="metric-meta">Letzte Eingabe: 20.05.2025</div>
+            </div>
+            <svg class="sparkline" width="110" height="40" viewBox="0 0 110 40">
+              <polyline points="0,10 14,16 28,14 42,20 56,18 70,26 84,24 98,30 110,32" fill="none" stroke="var(--color-wasser)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="110" cy="32" r="3.5" fill="var(--color-wasser)"/>
+            </svg>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-footer">
+            <div class="metric-footer-col"><div class="label">Kosten (Mai)</div><div class="value" style="color:var(--color-wasser);">23,45&nbsp;€</div></div>
+            <div class="metric-footer-col"><div class="label">Prognose (Monat)</div><div class="value">25,00&nbsp;€</div></div>
+          </div>
+        </div>
+
+        <!-- Insight -->
+        <div class="insight-card">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 3a1 1 0 011 1v1a1 1 0 11-2 0V4a1 1 0 011-1zM3 11a1 1 0 011-1h1a1 1 0 110 2H4a1 1 0 01-1-1zM18 11a1 1 0 011-1h1a1 1 0 110 2h-1a1 1 0 01-1-1zM4 4a1 1 0 011.42 0l.7.71a1 1 0 11-1.42 1.42L4 5.42A1 1 0 014 4z"/><path d="M7 19h6M9 21h2M9 19c-1-3-3-3.5-3-6.5A4.5 4.5 0 1116 12.5c0 3-2 3.5-3 6.5"/></svg>
+          </div>
+          <div class="insight-body">
+            <span class="eyebrow">Insight</span>
+            <h3>Guter Trend!</h3>
+            <p>Dein Stromverbrauch ist im Vergleich zum Vormonat um 8&nbsp;% gesunken. Weiter so! 💚</p>
+            <div class="insight-tip">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg>
+              Ersparnis-Potenzial: ca. 61&nbsp;€ pro Jahr
+            </div>
+          </div>
+          <svg class="insight-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-bar">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 1h6"/></svg>
+          </div>
+          <div class="cta-text">
+            <div class="title">Zählerstände in Sekunden erfassen</div>
+            <div class="subtitle">Schnell, einfach & zuverlässig.</div>
+          </div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+
+        <!-- Bottom nav -->
+        <div class="bottom-nav">
+          <div class="nav-item active">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>
+            <span>Übersicht</span><div class="dot"></div>
+          </div>
+          <div class="nav-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+            <span>Erfassen</span><div class="dot hidden"></div>
+          </div>
+          <div class="nav-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5M12 7v5l4 2"/></svg>
+            <span>Historie</span><div class="dot hidden"></div>
+          </div>
+          <div class="nav-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg>
+            <span>Insights</span><div class="dot hidden"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ICONS -->
+<section class="block" id="icons">
+  <div class="wrap">
+    <div class="block-head">
+      <h2>Icons</h2>
+      <p>Outline-Stil, 1.75–2px Strichstärke, runde Linienenden. Versorgungsarten-Icons stehen immer weiß auf Vollton-Kreis.</p>
+    </div>
+    <div class="icon-grid">
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 11-13h-7l1-7z"/></svg><div class="label">Strom</div></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0011 17a2.5 2.5 0 002.5-2.5c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7.5 7.5 0 11-15 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg><div class="label">Gas</div></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69s5.66 6.07 5.66 10.31A5.66 5.66 0 1112 7.34a5.66 5.66 0 015.66 5.66"/></svg><div class="label">Wasser</div></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><div class="label">Glocke</div></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 1h6"/></svg><div class="label">Timer</div></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="label">Insight</div></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg><div class="label">Chevron</div></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg><div class="label">Trend ↓</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>MeterMind Design System · v1.0 · Erstellt aus dem App-Screenshot-Audit</p>
+</footer>
+
+</body>
+</html>
