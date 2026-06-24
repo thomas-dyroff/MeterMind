@@ -6,14 +6,32 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		0A9D9F8E2C70000100000013 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0A9D9F8E2C7000010000000A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A9D9F8E2C70000100000006;
+			remoteInfo = MeterMind;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0A9D9F8E2C70000100000001 /* MeterMind.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeterMind.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A9D9F8E2C70000100000010 /* MeterMindTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MeterMindTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		0A9D9F8E2C70000100000002 /* MeterMind */ = {isa = PBXFileSystemSynchronizedRootGroup; path = MeterMind; sourceTree = "<group>"; };
-		0A9D9F8E2C70000100000011 /* MeterMindTests */ = {isa = PBXFileSystemSynchronizedRootGroup; path = MeterMindTests; sourceTree = "<group>"; };
+		0A9D9F8E2C70000100000002 /* MeterMind */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MeterMind;
+			sourceTree = "<group>";
+		};
+		0A9D9F8E2C70000100000011 /* MeterMindTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MeterMindTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,16 +71,6 @@
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
-
-/* Begin PBXContainerItemProxy section */
-		0A9D9F8E2C70000100000013 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0A9D9F8E2C7000010000000A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0A9D9F8E2C70000100000006;
-			remoteInfo = MeterMind;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXNativeTarget section */
 		0A9D9F8E2C70000100000006 /* MeterMind */ = {
@@ -413,20 +421,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0A9D9F8E2C7000010000000B /* Build configuration list for PBXProject "MeterMind" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0A9D9F8E2C7000010000000C /* Debug */,
-				0A9D9F8E2C7000010000000D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		0A9D9F8E2C70000100000007 /* Build configuration list for PBXNativeTarget "MeterMind" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0A9D9F8E2C7000010000000E /* Debug */,
 				0A9D9F8E2C7000010000000F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0A9D9F8E2C7000010000000B /* Build configuration list for PBXProject "MeterMind" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A9D9F8E2C7000010000000C /* Debug */,
+				0A9D9F8E2C7000010000000D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

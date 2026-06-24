@@ -5,6 +5,18 @@ enum AppStrings {
     static let dashboardTitle = LocalizedStringResource("dashboard.title")
     static let dashboardPlaceholderMessage = LocalizedStringResource("dashboard.placeholder.message")
     static let dashboardEmptyMessage = LocalizedStringResource("dashboard.empty.message")
+    static let dashboardAddMeterButton = LocalizedStringResource("dashboard.addMeter.button")
+    static let dashboardEditButton = LocalizedStringResource("dashboard.edit.button")
+    static let dashboardDoneButton = LocalizedStringResource("dashboard.done.button")
+    static let dashboardShowToggle = LocalizedStringResource("dashboard.show.toggle")
+    static let dashboardEditDashboardButton = LocalizedStringResource("dashboard.editDashboard.button")
+    static let dashboardNoVisibleMetersMessage = LocalizedStringResource("dashboard.noVisibleMeters.message")
+    static let dashboardNoReadingValue = LocalizedStringResource("dashboard.noReading.value")
+    static let dashboardNoReadingDate = LocalizedStringResource("dashboard.noReading.date")
+    static let dashboardLatestReadingFormat = LocalizedStringResource("dashboard.latestReading.format")
+    static let dashboardSparklineAccessibilityLabel = LocalizedStringResource(
+        "dashboard.sparkline.accessibility.label"
+    )
     static let dashboardKpiMeterCount = LocalizedStringResource("dashboard.kpi.meterCount")
     static let dashboardKpiLatestReading = LocalizedStringResource("dashboard.kpi.latestReading")
     static let dashboardKpiMonthConsumption = LocalizedStringResource("dashboard.kpi.monthConsumption")

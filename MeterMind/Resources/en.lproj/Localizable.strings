@@ -1,6 +1,16 @@
 "dashboard.title" = "Dashboard";
 "dashboard.placeholder.message" = "This area will be prepared later.";
-"dashboard.empty.message" = "Capture readings to fill your dashboard.";
+"dashboard.empty.message" = "Create your first meter to fill the dashboard.";
+"dashboard.addMeter.button" = "Create meter";
+"dashboard.edit.button" = "Edit";
+"dashboard.done.button" = "Done";
+"dashboard.show.toggle" = "Show";
+"dashboard.editDashboard.button" = "Edit dashboard";
+"dashboard.noVisibleMeters.message" = "No meters visible on dashboard";
+"dashboard.noReading.value" = "None";
+"dashboard.noReading.date" = "No reading yet";
+"dashboard.latestReading.format" = "Latest reading: %@";
+"dashboard.sparkline.accessibility.label" = "Consumption for the last 12 months";
 "dashboard.kpi.meterCount" = "Meters";
 "dashboard.kpi.latestReading" = "Latest Reading";
 "dashboard.kpi.monthConsumption" = "Month Usage";

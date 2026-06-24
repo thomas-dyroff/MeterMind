@@ -25,6 +25,12 @@ final class Meter {
     /// Creation timestamp for sorting and auditing.
     var createdAt: Date
 
+    /// Sort order used by the dashboard composition.
+    var dashboardSortOrder: Int = 0
+
+    /// Controls whether this meter appears on the dashboard.
+    var isVisibleOnDashboard: Bool = true
+
     /// Optional owning property. Property management is introduced later.
     var property: Property?
 
@@ -45,6 +51,8 @@ final class Meter {
         unit: String,
         serialNumber: String? = nil,
         createdAt: Date = .now,
+        dashboardSortOrder: Int = 0,
+        isVisibleOnDashboard: Bool = true,
         property: Property? = nil,
         readings: [Reading] = [],
         tariffs: [Tariff] = []
@@ -56,6 +64,8 @@ final class Meter {
         self.unit = unit
         self.serialNumber = serialNumber
         self.createdAt = createdAt
+        self.dashboardSortOrder = dashboardSortOrder
+        self.isVisibleOnDashboard = isVisibleOnDashboard
         self.property = property
         self.readings = readings
         self.tariffs = tariffs

@@ -13,6 +13,13 @@ protocol MeterRepositoryProtocol {
     /// Deletes a meter.
     func delete(_ meter: Meter) throws
 
+    /// Persists dashboard-only preferences for a meter.
+    func updateDashboardPreferences(
+        _ meter: Meter,
+        dashboardSortOrder: Int,
+        isVisibleOnDashboard: Bool
+    ) throws
+
     /// Fetches all meters sorted by creation date.
     func fetchAll() throws -> [Meter]
 
@@ -46,6 +53,8 @@ final class SwiftDataMeterRepository: MeterRepositoryProtocol {
             customTypeName: optionalSanitized(formData.customTypeName),
             unit: sanitized(formData.unit),
             serialNumber: optionalSanitized(formData.serialNumber),
+            dashboardSortOrder: nextDashboardSortOrder(),
+            isVisibleOnDashboard: true,
             property: property
         )
         modelContext.insert(meter)
@@ -75,10 +84,24 @@ final class SwiftDataMeterRepository: MeterRepositoryProtocol {
         try modelContext.save()
     }
 
+    /// Persists dashboard-only preferences for a meter.
+    func updateDashboardPreferences(
+        _ meter: Meter,
+        dashboardSortOrder: Int,
+        isVisibleOnDashboard: Bool
+    ) throws {
+        meter.dashboardSortOrder = dashboardSortOrder
+        meter.isVisibleOnDashboard = isVisibleOnDashboard
+        try modelContext.save()
+    }
+
     /// Fetches all meters sorted by creation date.
     func fetchAll() throws -> [Meter] {
         let descriptor = FetchDescriptor<Meter>(
-            sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
+            sortBy: [
+                SortDescriptor(\.dashboardSortOrder),
+                SortDescriptor(\.createdAt)
+            ]
         )
         return try modelContext.fetch(descriptor)
     }
@@ -113,5 +136,13 @@ final class SwiftDataMeterRepository: MeterRepositoryProtocol {
     private func optionalSanitized(_ value: String) -> String? {
         let sanitizedValue = sanitized(value)
         return sanitizedValue.isEmpty ? nil : sanitizedValue
+    }
+
+    private func nextDashboardSortOrder() -> Int {
+        let descriptor = FetchDescriptor<Meter>(
+            sortBy: [SortDescriptor(\.dashboardSortOrder, order: .reverse)]
+        )
+        let maxSortOrder = (try? modelContext.fetch(descriptor).first?.dashboardSortOrder) ?? -1
+        return maxSortOrder + 1
     }
 }

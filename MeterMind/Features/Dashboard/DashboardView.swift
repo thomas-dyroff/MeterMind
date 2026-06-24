@@ -1,7 +1,6 @@
-import Charts
 import SwiftUI
 
-/// Dashboard view for core KPIs.
+/// Meter-centered dashboard start screen.
 struct DashboardView: View {
     // MARK: - Properties
 
@@ -11,101 +10,101 @@ struct DashboardView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                if viewModel.hasData {
-                    dashboardContent
-                } else {
+            Group {
+                if viewModel.isEditingDashboard {
+                    DashboardEditView(viewModel: viewModel)
+                } else if viewModel.cards.isEmpty {
                     emptyState
+                } else {
+                    meterCards
                 }
             }
             .background(AppTheme.Colors.background)
             .navigationTitle(Text(AppStrings.dashboardTitle))
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    if viewModel.isEditingDashboard {
+                        Button {
+                            viewModel.finishEditingDashboard()
+                        } label: {
+                            Text(AppStrings.dashboardDoneButton)
+                        }
+                    } else {
+                        Button {
+                            viewModel.startEditingDashboard()
+                        } label: {
+                            Image(systemName: "slider.horizontal.3")
+                        }
+                        .accessibilityLabel(Text(AppStrings.dashboardEditButton))
+                    }
+                }
+            }
             .task {
                 viewModel.loadDashboard()
             }
         }
     }
 
-    private var dashboardContent: some View {
-        VStack(spacing: AppTheme.Spacing.medium) {
-            LazyVGrid(
-                columns: [GridItem(.flexible()), GridItem(.flexible())],
-                spacing: AppTheme.Spacing.medium
-            ) {
-                kpiCard(title: AppStrings.dashboardKpiMeterCount, value: viewModel.meterCountText)
-                kpiCard(title: AppStrings.dashboardKpiLatestReading, value: viewModel.latestReadingText)
-                kpiCard(title: AppStrings.dashboardKpiMonthConsumption, value: viewModel.currentMonthConsumptionText)
-                kpiCard(title: AppStrings.dashboardKpiYearConsumption, value: viewModel.currentYearConsumptionText)
-
-                if let currentMonthCostText = viewModel.currentMonthCostText {
-                    kpiCard(title: AppStrings.dashboardKpiMonthCost, value: currentMonthCostText)
+    private var meterCards: some View {
+        ScrollView {
+            LazyVStack(spacing: AppTheme.Spacing.medium) {
+                ForEach(viewModel.cards) { card in
+                    NavigationLink {
+                        meterDestination(for: card)
+                    } label: {
+                        MeterDashboardCard(viewData: card)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
-
-            lineChart(
-                title: AppStrings.analyticsConsumptionChartTitle,
-                data: viewModel.consumptionChartData
-            )
-
-            if !viewModel.costChartData.isEmpty {
-                costLineChart(data: viewModel.costChartData)
-            }
+            .padding(AppTheme.Spacing.medium)
         }
-        .padding(AppTheme.Spacing.medium)
     }
 
     private var emptyState: some View {
-        SectionCard {
-            EmptyStateView(
-                title: AppStrings.dashboardTitle,
-                message: AppStrings.dashboardEmptyMessage,
-                icon: "square.grid.2x2"
-            )
+        VStack(spacing: AppTheme.Spacing.large) {
+            SectionCard {
+                EmptyStateView(
+                    title: AppStrings.dashboardTitle,
+                    message: emptyStateMessage,
+                    icon: "gauge.with.dots.needle.bottom.50percent"
+                )
+            }
+
+            if !viewModel.editCards.isEmpty {
+                PrimaryButton(title: AppStrings.dashboardEditDashboardButton) {
+                    viewModel.startEditingDashboard()
+                }
+            }
         }
         .padding(AppTheme.Spacing.medium)
     }
 
-    private func kpiCard(title: LocalizedStringResource, value: String) -> some View {
-        SectionCard {
-            Text(title)
-                .font(AppTheme.Typography.callout)
-                .foregroundStyle(AppTheme.Colors.secondaryText)
-
-            Text(value)
-                .font(AppTheme.Typography.screenTitle)
-                .foregroundStyle(AppTheme.Colors.primaryText)
-        }
+    private var emptyStateMessage: LocalizedStringResource {
+        viewModel.editCards.isEmpty ? AppStrings.dashboardEmptyMessage : AppStrings.dashboardNoVisibleMetersMessage
     }
 
-    private func lineChart(title: LocalizedStringResource, data: [AnalyticsDataPoint]) -> some View {
-        SectionCard {
-            Text(title)
-                .font(AppTheme.Typography.cardTitle)
-
-            Chart(data) { point in
-                LineMark(
-                    x: .value(String(localized: AppStrings.analyticsChartDateAxis), point.date),
-                    y: .value(String(localized: AppStrings.analyticsChartValueAxis), point.chartValue)
-                )
-                .foregroundStyle(AppTheme.Colors.accent)
-            }
-            .frame(height: 220)
-        }
-    }
-
-    private func costLineChart(data: [CostDataPoint]) -> some View {
-        SectionCard {
-            Text(AppStrings.analyticsCostChartTitle)
-                .font(AppTheme.Typography.cardTitle)
-
-            Chart(data) { point in
-                LineMark(
-                    x: .value(String(localized: AppStrings.analyticsChartDateAxis), point.date),
-                    y: .value(String(localized: AppStrings.analyticsChartCostAxis), point.chartValue)
-                )
-                .foregroundStyle(AppTheme.Colors.warning)
-            }
-            .frame(height: 220)
+    @ViewBuilder
+    private func meterDestination(for card: DashboardCardViewData) -> some View {
+        if let meter = viewModel.meter(for: card) {
+            MeterDetailView(
+                viewModel: MeterDetailViewModel(meter: meter),
+                editViewModelFactory: { onSave in
+                    viewModel.editViewModel(for: meter, onSave: onSave)
+                },
+                readingListViewModelFactory: {
+                    viewModel.readingListViewModel(for: meter)
+                },
+                onSave: {
+                    viewModel.loadDashboard()
+                }
+            )
+        } else {
+            EmptyStateView(
+                title: AppStrings.meterDetailTitle,
+                message: AppStrings.errorGeneric,
+                icon: "exclamationmark.triangle"
+            )
         }
     }
 }

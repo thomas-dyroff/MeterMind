@@ -93,3 +93,38 @@ Eine einfache, lokale iOS-App zur:
 * Zeit zur Erfassung eines Zählerstands < 10 Sekunden
 * Wiederkehrende Nutzung (monatliche Erfassung)
 * Premium Conversion über Sync und Kostenfeatures
+
+
+# Aktualisierung für Docs/PRD.md
+
+## Dashboard / Startseite
+
+Die Startseite zeigt eine vertikale Liste aller angelegten Zähler.
+
+Für jeden Zähler wird eine eigene Dashboard-Karte angezeigt.
+
+### Pro Zählerkarte
+
+* Icon passend zum Zählertyp
+* Name des Zählers
+* Letzter erfasster Zählerstand
+* Einheit
+* Datum der letzten Erfassung
+* Liniendiagramm der Verbräuche der letzten 12 Monate
+
+### Nicht Bestandteil der ersten Dashboard-Version
+
+* Kosten
+* Prognose
+* Einsparpotenzial
+* KI-Insight
+* Trend-Badge gegen Vormonat
+
+Diese Elemente können später ergänzt werden.
+
+### Empty State
+
+Wenn keine Zähler vorhanden sind:
+
+* Hinweis anzeigen
+* Primäre Aktion: „Zähler anlegen“

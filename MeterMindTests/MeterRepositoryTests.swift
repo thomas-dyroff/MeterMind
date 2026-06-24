@@ -35,6 +35,13 @@ final class MeterRepositoryTests: XCTestCase {
         XCTAssertEqual(fetchedMeters.first?.name, "Main Power")
     }
 
+    func testCreateUsesDashboardDefaults() throws {
+        let meter = try repository.create(validFormData(), property: nil)
+
+        XCTAssertTrue(meter.isVisibleOnDashboard)
+        XCTAssertEqual(meter.dashboardSortOrder, 0)
+    }
+
     func testUpdatePersistsChanges() throws {
         let meter = try repository.create(validFormData(), property: nil)
         let updatedFormData = MeterFormData(
@@ -59,6 +66,20 @@ final class MeterRepositoryTests: XCTestCase {
         try repository.delete(meter)
 
         XCTAssertTrue(try repository.fetchAll().isEmpty)
+    }
+
+    func testUpdateDashboardPreferencesPersistsChanges() throws {
+        let meter = try repository.create(validFormData(), property: nil)
+
+        try repository.updateDashboardPreferences(
+            meter,
+            dashboardSortOrder: 3,
+            isVisibleOnDashboard: false
+        )
+
+        let fetchedMeter = try XCTUnwrap(repository.fetchById(meter.id))
+        XCTAssertEqual(fetchedMeter.dashboardSortOrder, 3)
+        XCTAssertFalse(fetchedMeter.isVisibleOnDashboard)
     }
 
     private func validFormData() -> MeterFormData {

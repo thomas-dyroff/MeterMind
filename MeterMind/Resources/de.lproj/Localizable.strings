@@ -1,6 +1,16 @@
 "dashboard.title" = "Dashboard";
 "dashboard.placeholder.message" = "Dieser Bereich wird später vorbereitet.";
-"dashboard.empty.message" = "Erfasse Zählerstände, um dein Dashboard zu füllen.";
+"dashboard.empty.message" = "Lege deinen ersten Zähler an, um das Dashboard zu füllen.";
+"dashboard.addMeter.button" = "Zähler anlegen";
+"dashboard.edit.button" = "Bearbeiten";
+"dashboard.done.button" = "Fertig";
+"dashboard.show.toggle" = "Anzeigen";
+"dashboard.editDashboard.button" = "Dashboard bearbeiten";
+"dashboard.noVisibleMeters.message" = "Keine Zähler im Dashboard sichtbar";
+"dashboard.noReading.value" = "Keine";
+"dashboard.noReading.date" = "Noch keine Erfassung";
+"dashboard.latestReading.format" = "Letzte Erfassung: %@";
+"dashboard.sparkline.accessibility.label" = "Verbrauch der letzten 12 Monate";
 "dashboard.kpi.meterCount" = "Zähler";
 "dashboard.kpi.latestReading" = "Letzte Erfassung";
 "dashboard.kpi.monthConsumption" = "Verbrauch Monat";

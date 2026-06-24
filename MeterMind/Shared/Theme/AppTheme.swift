@@ -20,6 +20,7 @@ enum AppTheme {
         static let cardTitle = Font.headline
         static let body = Font.body
         static let callout = Font.callout
+        static let caption = Font.system(size: 12.5, weight: .medium)
         static let button = Font.headline
     }
 

@@ -110,3 +110,44 @@ Tab-based:
 * Erfassen
 * Analyse
 * Einstellungen
+
+
+# Aktualisierung für Docs/ARCHITECTURE.md / Docs/CODEX_CONTEXT.md
+
+## Dashboard Architektur
+
+Das Dashboard ist zählerzentriert.
+
+### Komponenten
+
+* DashboardView
+* DashboardViewModel
+* MeterDashboardCard
+* MeterSparklineChart
+
+### DashboardViewModel liefert
+
+Pro Zähler:
+
+* meterId
+* meterName
+* meterType
+* iconName
+* unit
+* latestReadingValue
+* latestReadingDate
+* monthlyConsumptionLast12Months
+
+### Berechnungslogik
+
+Die letzten 12 Monatsverbräuche werden aus Reading-Differenzen berechnet.
+
+Views enthalten keine Berechnungslogik.
+
+Datenfluss:
+
+ReadingRepository
+→ ConsumptionService
+→ DashboardViewModel
+→ DashboardView
+→ MeterDashboardCard
