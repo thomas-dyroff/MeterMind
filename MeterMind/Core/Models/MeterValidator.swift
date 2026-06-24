@@ -22,6 +22,8 @@ enum MeterValidator {
             errors.append(.emptyUnit)
         } else if unit.count > maxUnitLength {
             errors.append(.unitTooLong)
+        } else if !MeterUnit.isSupported(unit) {
+            errors.append(.invalidUnit)
         }
 
         return errors

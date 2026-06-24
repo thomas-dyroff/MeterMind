@@ -69,6 +69,14 @@
 "meter.save.button" = "Save";
 "meter.create.button" = "Create";
 "meter.edit.button" = "Edit";
+"meter.detail.edit" = "Edit meter";
+"meter.detail.history.show" = "Show history";
+"meter.detail.chart.week" = "Week";
+"meter.detail.chart.month" = "Month";
+"meter.detail.chart.quarter" = "Quarter";
+"meter.detail.chart.year" = "Year";
+"meter.detail.chart.empty" = "Not enough data for this chart yet";
+"meter.detail.latestReading" = "Latest reading: %@";
 "meter.cancel.button" = "Cancel";
 "meter.notProvided" = "Not provided";
 "meter.form.section.details" = "Details";
@@ -80,11 +88,17 @@
 "meter.type.districtHeating" = "District Heating";
 "meter.type.heatingOil" = "Heating Oil";
 "meter.type.custom" = "Custom";
+"meter.unit.kilowattHour" = "kWh";
+"meter.unit.cubicMeter" = "m³";
+"meter.unit.liter" = "L";
+"meter.unit.ton" = "t";
+"meter.unit.kilogram" = "kg";
 
 "validation.meter.name.required" = "Name is required.";
 "validation.meter.name.tooLong" = "Name must be 100 characters or less.";
 "validation.meter.unit.required" = "Unit is required.";
 "validation.meter.unit.tooLong" = "Unit must be 20 characters or less.";
+"validation.meter.unit.invalid" = "Please choose a supported unit.";
 "validation.reading.value.required" = "Reading value is required.";
 "validation.reading.value.numeric" = "Reading value must be numeric.";
 "validation.reading.value.nonNegative" = "Reading value must be greater than or equal to 0.";

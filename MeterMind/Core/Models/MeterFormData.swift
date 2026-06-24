@@ -22,7 +22,7 @@ struct MeterFormData: Equatable {
         name: String = "",
         type: MeterType = .electricityImport,
         customTypeName: String = "",
-        unit: String = "",
+        unit: String = MeterUnit.kilowattHour.rawValue,
         serialNumber: String = ""
     ) {
         self.name = name

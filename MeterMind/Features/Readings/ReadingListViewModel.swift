@@ -11,17 +11,20 @@ final class ReadingListViewModel: ObservableObject {
     let meter: Meter
     private let readingRepository: ReadingRepositoryProtocol
     private let validationService: ReadingValidationService
+    private let limit: Int?
 
     // MARK: - Initialization
 
     init(
         meter: Meter,
         readingRepository: ReadingRepositoryProtocol,
-        validationService: ReadingValidationService
+        validationService: ReadingValidationService,
+        limit: Int? = nil
     ) {
         self.meter = meter
         self.readingRepository = readingRepository
         self.validationService = validationService
+        self.limit = limit
     }
 
     // MARK: - Actions
@@ -29,7 +32,12 @@ final class ReadingListViewModel: ObservableObject {
     /// Loads readings for the meter.
     func loadReadings() {
         do {
-            readings = try readingRepository.fetchByMeter(meter)
+            let fetchedReadings = try readingRepository.fetchByMeter(meter)
+            if let limit {
+                readings = Array(fetchedReadings.prefix(limit))
+            } else {
+                readings = fetchedReadings
+            }
             errorMessage = nil
         } catch {
             errorMessage = AppStrings.errorGeneric
@@ -50,7 +58,7 @@ final class ReadingListViewModel: ObservableObject {
 
     /// Creates a detail view model.
     func detailViewModel(for reading: Reading) -> ReadingDetailViewModel {
-        ReadingDetailViewModel(reading: reading, meterUnit: meter.unit)
+        ReadingDetailViewModel(reading: reading, meterUnit: MeterUnit.symbol(for: meter.unit))
     }
 
     /// Creates a create-reading view model.

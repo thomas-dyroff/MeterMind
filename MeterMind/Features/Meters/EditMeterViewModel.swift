@@ -9,7 +9,7 @@ final class EditMeterViewModel: ObservableObject {
     @Published private(set) var validationErrors: [MeterValidationError] = []
     @Published var errorMessage: LocalizedStringResource?
 
-    private let meter: Meter
+    private let meterId: UUID
     private let meterRepository: MeterRepositoryProtocol
     private let onSave: () -> Void
 
@@ -20,14 +20,35 @@ final class EditMeterViewModel: ObservableObject {
         meterRepository: MeterRepositoryProtocol,
         onSave: @escaping () -> Void
     ) {
-        self.meter = meter
+        self.meterId = meter.id
         self.meterRepository = meterRepository
         self.onSave = onSave
         self.formData = MeterFormData(
             name: meter.name,
             type: meter.type,
             customTypeName: meter.customTypeName ?? "",
-            unit: meter.unit,
+            unit: MeterUnit.persistedRawValue(for: meter.unit),
+            serialNumber: meter.serialNumber ?? ""
+        )
+    }
+
+    init?(
+        meterId: UUID,
+        meterRepository: MeterRepositoryProtocol,
+        onSave: @escaping () -> Void
+    ) {
+        guard let meter = try? meterRepository.fetchById(meterId) else {
+            return nil
+        }
+
+        self.meterId = meterId
+        self.meterRepository = meterRepository
+        self.onSave = onSave
+        self.formData = MeterFormData(
+            name: meter.name,
+            type: meter.type,
+            customTypeName: meter.customTypeName ?? "",
+            unit: MeterUnit.persistedRawValue(for: meter.unit),
             serialNumber: meter.serialNumber ?? ""
         )
     }
@@ -42,6 +63,11 @@ final class EditMeterViewModel: ObservableObject {
         }
 
         do {
+            guard let meter = try meterRepository.fetchById(meterId) else {
+                errorMessage = AppStrings.errorGeneric
+                return
+            }
+
             try meterRepository.update(meter, with: formData, property: meter.property)
             errorMessage = nil
             onSave()

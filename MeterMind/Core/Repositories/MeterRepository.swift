@@ -51,7 +51,7 @@ final class SwiftDataMeterRepository: MeterRepositoryProtocol {
             name: sanitized(formData.name),
             type: formData.type,
             customTypeName: optionalSanitized(formData.customTypeName),
-            unit: sanitized(formData.unit),
+            unit: MeterUnit.persistedRawValue(for: formData.unit),
             serialNumber: optionalSanitized(formData.serialNumber),
             dashboardSortOrder: nextDashboardSortOrder(),
             isVisibleOnDashboard: true,
@@ -72,7 +72,7 @@ final class SwiftDataMeterRepository: MeterRepositoryProtocol {
         meter.name = sanitized(formData.name)
         meter.type = formData.type
         meter.customTypeName = optionalSanitized(formData.customTypeName)
-        meter.unit = sanitized(formData.unit)
+        meter.unit = MeterUnit.persistedRawValue(for: formData.unit)
         meter.serialNumber = optionalSanitized(formData.serialNumber)
         meter.property = property
         try modelContext.save()

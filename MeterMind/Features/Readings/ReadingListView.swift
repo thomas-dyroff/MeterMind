@@ -71,7 +71,7 @@ struct ReadingListView: View {
                         onSave: viewModel.loadReadings
                     )
                 } label: {
-                    ReadingRowView(reading: reading, unit: viewModel.meter.unit)
+                    ReadingRowView(reading: reading, unit: MeterUnit.symbol(for: viewModel.meter.unit))
                 }
             }
             .onDelete(perform: viewModel.deleteReadings)

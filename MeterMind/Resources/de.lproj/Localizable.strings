@@ -69,6 +69,14 @@
 "meter.save.button" = "Speichern";
 "meter.create.button" = "Anlegen";
 "meter.edit.button" = "Bearbeiten";
+"meter.detail.edit" = "Zähler bearbeiten";
+"meter.detail.history.show" = "Historie anzeigen";
+"meter.detail.chart.week" = "Woche";
+"meter.detail.chart.month" = "Monat";
+"meter.detail.chart.quarter" = "Quartal";
+"meter.detail.chart.year" = "Jahr";
+"meter.detail.chart.empty" = "Noch nicht genügend Daten für dieses Diagramm";
+"meter.detail.latestReading" = "Letzte Erfassung: %@";
 "meter.cancel.button" = "Abbrechen";
 "meter.notProvided" = "Nicht angegeben";
 "meter.form.section.details" = "Details";
@@ -80,11 +88,17 @@
 "meter.type.districtHeating" = "Fernwärme";
 "meter.type.heatingOil" = "Heizöl";
 "meter.type.custom" = "Benutzerdefiniert";
+"meter.unit.kilowattHour" = "kWh";
+"meter.unit.cubicMeter" = "m³";
+"meter.unit.liter" = "l";
+"meter.unit.ton" = "t";
+"meter.unit.kilogram" = "kg";
 
 "validation.meter.name.required" = "Name ist erforderlich.";
 "validation.meter.name.tooLong" = "Name darf maximal 100 Zeichen lang sein.";
 "validation.meter.unit.required" = "Einheit ist erforderlich.";
 "validation.meter.unit.tooLong" = "Einheit darf maximal 20 Zeichen lang sein.";
+"validation.meter.unit.invalid" = "Bitte wähle eine unterstützte Einheit aus.";
 "validation.reading.value.required" = "Zählerstand ist erforderlich.";
 "validation.reading.value.numeric" = "Zählerstand muss numerisch sein.";
 "validation.reading.value.nonNegative" = "Zählerstand muss größer oder gleich 0 sein.";

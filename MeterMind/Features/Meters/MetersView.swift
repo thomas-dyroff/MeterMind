@@ -68,10 +68,10 @@ struct MetersView: View {
                     MeterDetailView(
                         viewModel: viewModel.detailViewModel(for: meter),
                         editViewModelFactory: { onSave in
-                            viewModel.editViewModel(for: meter, onSave: onSave)
+                            viewModel.editViewModel(for: meter.id, onSave: onSave)
                         },
                         readingListViewModelFactory: {
-                            viewModel.readingListViewModel(for: meter)
+                            viewModel.readingListViewModel(for: meter, limit: 30)
                         },
                         onSave: viewModel.loadMeters
                     )

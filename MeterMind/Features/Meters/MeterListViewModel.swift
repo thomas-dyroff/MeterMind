@@ -11,6 +11,8 @@ final class MeterListViewModel: ObservableObject {
     private let meterRepository: MeterRepositoryProtocol
     private let readingRepository: ReadingRepositoryProtocol
     private let readingValidationService: ReadingValidationService
+    private let consumptionService: ConsumptionService
+    private let aggregationService: AggregationService
 
     // MARK: - Initialization
 
@@ -18,6 +20,8 @@ final class MeterListViewModel: ObservableObject {
         self.meterRepository = dependencies.repositories.meterRepository
         self.readingRepository = dependencies.repositories.readingRepository
         self.readingValidationService = dependencies.services.readingValidationService
+        self.consumptionService = dependencies.services.consumptionService
+        self.aggregationService = dependencies.services.aggregationService
     }
 
     // MARK: - Actions
@@ -46,7 +50,13 @@ final class MeterListViewModel: ObservableObject {
 
     /// Creates a detail view model for a selected meter.
     func detailViewModel(for meter: Meter) -> MeterDetailViewModel {
-        MeterDetailViewModel(meter: meter)
+        MeterDetailViewModel(
+            meterId: meter.id,
+            meterRepository: meterRepository,
+            readingRepository: readingRepository,
+            consumptionService: consumptionService,
+            aggregationService: aggregationService
+        )
     }
 
     /// Creates a create-meter view model.
@@ -55,16 +65,17 @@ final class MeterListViewModel: ObservableObject {
     }
 
     /// Creates an edit-meter view model.
-    func editViewModel(for meter: Meter, onSave: @escaping () -> Void) -> EditMeterViewModel {
-        EditMeterViewModel(meter: meter, meterRepository: meterRepository, onSave: onSave)
+    func editViewModel(for meterId: UUID, onSave: @escaping () -> Void) -> EditMeterViewModel? {
+        EditMeterViewModel(meterId: meterId, meterRepository: meterRepository, onSave: onSave)
     }
 
     /// Creates a reading history view model for a meter.
-    func readingListViewModel(for meter: Meter) -> ReadingListViewModel {
+    func readingListViewModel(for meter: Meter, limit: Int? = nil) -> ReadingListViewModel {
         ReadingListViewModel(
             meter: meter,
             readingRepository: readingRepository,
-            validationService: readingValidationService
+            validationService: readingValidationService,
+            limit: limit
         )
     }
 }

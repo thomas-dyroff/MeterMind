@@ -9,6 +9,11 @@ struct AggregationService {
         self.calendar = calendar
     }
 
+    /// Aggregates consumption by day.
+    func dailyAggregation(intervals: [ConsumptionInterval]) -> [AnalyticsDataPoint] {
+        aggregate(intervals: intervals, component: .day)
+    }
+
     /// Aggregates consumption by week.
     func weeklyAggregation(intervals: [ConsumptionInterval]) -> [AnalyticsDataPoint] {
         aggregate(intervals: intervals, component: .weekOfYear)

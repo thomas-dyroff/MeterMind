@@ -47,7 +47,7 @@ final class MeterRepositoryTests: XCTestCase {
         let updatedFormData = MeterFormData(
             name: "Updated Power",
             type: .gas,
-            unit: "m3",
+            unit: MeterUnit.cubicMeter.rawValue,
             serialNumber: "ABC-123"
         )
 
@@ -56,8 +56,23 @@ final class MeterRepositoryTests: XCTestCase {
         let fetchedMeter = try XCTUnwrap(repository.fetchById(meter.id))
         XCTAssertEqual(fetchedMeter.name, "Updated Power")
         XCTAssertEqual(fetchedMeter.type, .gas)
-        XCTAssertEqual(fetchedMeter.unit, "m3")
+        XCTAssertEqual(fetchedMeter.unit, MeterUnit.cubicMeter.rawValue)
         XCTAssertEqual(fetchedMeter.serialNumber, "ABC-123")
+    }
+
+    func testUpdateKeepsExistingMeterIdentifier() throws {
+        let meter = try repository.create(validFormData(), property: nil)
+        let originalId = meter.id
+
+        try repository.update(
+            meter,
+            with: MeterFormData(name: "Renamed", type: .water, unit: MeterUnit.liter.rawValue),
+            property: nil
+        )
+
+        let fetchedMeter = try XCTUnwrap(repository.fetchById(originalId))
+        XCTAssertEqual(fetchedMeter.id, originalId)
+        XCTAssertEqual(fetchedMeter.name, "Renamed")
     }
 
     func testDeleteRemovesMeter() throws {

@@ -33,8 +33,12 @@ struct MeterFormView: View {
                 .textInputAutocapitalization(.words)
             }
 
-            TextField(String(localized: AppStrings.meterUnitField), text: $formData.unit)
-                .textInputAutocapitalization(.never)
+            Picker(String(localized: AppStrings.meterUnitField), selection: unitSelection) {
+                ForEach(MeterUnit.allCases) { unit in
+                    Text(unit.localizedLabel)
+                        .tag(unit)
+                }
+            }
 
             TextField(
                 String(localized: AppStrings.meterSerialNumberField),
@@ -54,5 +58,16 @@ struct MeterFormView: View {
                     .foregroundStyle(AppTheme.Colors.error)
             }
         }
+    }
+
+    private var unitSelection: Binding<MeterUnit> {
+        Binding(
+            get: {
+                MeterUnit.fallbackUnit(for: formData.unit)
+            },
+            set: { newUnit in
+                formData.unit = newUnit.rawValue
+            }
+        )
     }
 }

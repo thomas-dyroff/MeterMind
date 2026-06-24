@@ -30,7 +30,7 @@ final class EditReadingViewModel: ObservableObject {
     ) {
         self.reading = reading
         self.meter = meter
-        self.meterUnit = meter.unit
+        self.meterUnit = MeterUnit.symbol(for: meter.unit)
         self.readingRepository = readingRepository
         self.validationService = validationService
         self.onSave = onSave

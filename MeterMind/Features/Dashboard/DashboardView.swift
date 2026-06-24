@@ -88,12 +88,12 @@ struct DashboardView: View {
     private func meterDestination(for card: DashboardCardViewData) -> some View {
         if let meter = viewModel.meter(for: card) {
             MeterDetailView(
-                viewModel: MeterDetailViewModel(meter: meter),
+                viewModel: viewModel.detailViewModel(for: card) ?? MeterDetailViewModel(meter: meter),
                 editViewModelFactory: { onSave in
-                    viewModel.editViewModel(for: meter, onSave: onSave)
+                    viewModel.editViewModel(for: card.meterId, onSave: onSave)
                 },
                 readingListViewModelFactory: {
-                    viewModel.readingListViewModel(for: meter)
+                    viewModel.readingListViewModel(for: meter, limit: 30)
                 },
                 onSave: {
                     viewModel.loadDashboard()

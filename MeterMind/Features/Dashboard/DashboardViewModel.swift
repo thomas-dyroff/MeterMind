@@ -123,11 +123,14 @@ final class DashboardViewModel: ObservableObject {
 
     /// Creates a detail view model for a selected meter card.
     func detailViewModel(for card: DashboardCardViewData) -> MeterDetailViewModel? {
-        guard let meter = meter(for: card) else {
-            return nil
-        }
-
-        return MeterDetailViewModel(meter: meter)
+        MeterDetailViewModel(
+            meterId: card.meterId,
+            meterRepository: meterRepository,
+            readingRepository: readingRepository,
+            consumptionService: consumptionService,
+            aggregationService: aggregationService,
+            calendar: calendar
+        )
     }
 
     /// Creates a create-meter view model.
@@ -137,20 +140,16 @@ final class DashboardViewModel: ObservableObject {
 
     /// Creates an edit-meter view model.
     func editViewModel(for card: DashboardCardViewData, onSave: @escaping () -> Void) -> EditMeterViewModel? {
-        guard let meter = meter(for: card) else {
-            return nil
-        }
-
-        return EditMeterViewModel(meter: meter, meterRepository: meterRepository, onSave: onSave)
+        EditMeterViewModel(meterId: card.meterId, meterRepository: meterRepository, onSave: onSave)
     }
 
     /// Creates an edit-meter view model.
-    func editViewModel(for meter: Meter, onSave: @escaping () -> Void) -> EditMeterViewModel {
-        EditMeterViewModel(meter: meter, meterRepository: meterRepository, onSave: onSave)
+    func editViewModel(for meterId: UUID, onSave: @escaping () -> Void) -> EditMeterViewModel? {
+        EditMeterViewModel(meterId: meterId, meterRepository: meterRepository, onSave: onSave)
     }
 
     /// Creates a reading history view model for a meter card.
-    func readingListViewModel(for card: DashboardCardViewData) -> ReadingListViewModel? {
+    func readingListViewModel(for card: DashboardCardViewData, limit: Int? = nil) -> ReadingListViewModel? {
         guard let meter = meter(for: card) else {
             return nil
         }
@@ -158,16 +157,18 @@ final class DashboardViewModel: ObservableObject {
         return ReadingListViewModel(
             meter: meter,
             readingRepository: readingRepository,
-            validationService: readingValidationService
+            validationService: readingValidationService,
+            limit: limit
         )
     }
 
     /// Creates a reading history view model for a meter.
-    func readingListViewModel(for meter: Meter) -> ReadingListViewModel {
+    func readingListViewModel(for meter: Meter, limit: Int? = nil) -> ReadingListViewModel {
         ReadingListViewModel(
             meter: meter,
             readingRepository: readingRepository,
-            validationService: readingValidationService
+            validationService: readingValidationService,
+            limit: limit
         )
     }
 
@@ -208,7 +209,7 @@ final class DashboardViewModel: ObservableObject {
             iconColor: iconColor(for: meter.type),
             latestReadingValue: latestReading?.value,
             latestReadingDate: latestReading?.date,
-            unit: meter.unit,
+            unit: MeterUnit.symbol(for: meter.unit),
             dashboardSortOrder: meter.dashboardSortOrder,
             isVisibleOnDashboard: meter.isVisibleOnDashboard,
             monthlyConsumptionValues: monthlyConsumptionLast12Months(

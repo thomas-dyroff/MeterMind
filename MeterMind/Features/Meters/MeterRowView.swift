@@ -25,6 +25,6 @@ struct MeterRowView: View {
         let typeName = meter.type == .custom
             ? meter.customTypeName ?? String(localized: meter.type.localizedTitle)
             : String(localized: meter.type.localizedTitle)
-        return "\(typeName) · \(meter.unit)"
+        return "\(typeName) · \(MeterUnit.symbol(for: meter.unit))"
     }
 }

@@ -25,4 +25,12 @@ final class MeterValidatorTests: XCTestCase {
 
         XCTAssertTrue(errors.isEmpty)
     }
+
+    func testUnsupportedUnitIsInvalid() {
+        let formData = MeterFormData(name: "Water", type: .water, unit: "gallon")
+
+        let errors = MeterValidator.validate(formData)
+
+        XCTAssertTrue(errors.contains(.invalidUnit))
+    }
 }

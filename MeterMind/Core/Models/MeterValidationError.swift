@@ -6,6 +6,7 @@ enum MeterValidationError: Error, Equatable, Identifiable {
     case nameTooLong
     case emptyUnit
     case unitTooLong
+    case invalidUnit
 
     /// Stable identifier for list rendering.
     var id: String {
@@ -18,6 +19,8 @@ enum MeterValidationError: Error, Equatable, Identifiable {
             "emptyUnit"
         case .unitTooLong:
             "unitTooLong"
+        case .invalidUnit:
+            "invalidUnit"
         }
     }
 
@@ -32,6 +35,8 @@ enum MeterValidationError: Error, Equatable, Identifiable {
             AppStrings.validationMeterUnitRequired
         case .unitTooLong:
             AppStrings.validationMeterUnitTooLong
+        case .invalidUnit:
+            AppStrings.validationMeterUnitInvalid
         }
     }
 }
