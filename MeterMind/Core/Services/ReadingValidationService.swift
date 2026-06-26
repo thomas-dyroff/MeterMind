@@ -24,6 +24,21 @@ struct ReadingValidationService {
         latestReading: Reading?,
         currentReadingId: UUID? = nil
     ) -> ReadingValidationResult {
+        validateReading(
+            formData: formData,
+            previousReading: latestReading,
+            nextReading: nil,
+            currentReadingId: currentReadingId
+        )
+    }
+
+    /// Validates reading form input against its chronological neighbors.
+    func validateReading(
+        formData: ReadingFormData,
+        previousReading: Reading?,
+        nextReading: Reading?,
+        currentReadingId: UUID? = nil
+    ) -> ReadingValidationResult {
         guard let value = decimal(from: formData.valueText) else {
             let trimmedValue = formData.valueText.trimmingCharacters(in: .whitespacesAndNewlines)
             return .invalid([trimmedValue.isEmpty ? .emptyValue : .nonNumericValue])
@@ -33,10 +48,16 @@ struct ReadingValidationService {
             return .invalid([.negativeValue])
         }
 
-        if let latestReading,
-           latestReading.id != currentReadingId,
-           value < latestReading.value {
+        if let previousReading,
+           previousReading.id != currentReadingId,
+           value < previousReading.value {
             return .invalid([.valueBelowLatest])
+        }
+
+        if let nextReading,
+           nextReading.id != currentReadingId,
+           value > nextReading.value {
+            return .invalid([.valueAboveNext])
         }
 
         return .valid(value)
@@ -48,11 +69,20 @@ struct ReadingValidationService {
         latestReading: Reading?,
         currentReadingId: UUID? = nil
     ) -> Bool {
-        guard let latestReading, latestReading.id != currentReadingId else {
+        detectLargeJump(newValue: newValue, previousReading: latestReading, currentReadingId: currentReadingId)
+    }
+
+    /// Detects whether a value is unusually higher than the previous chronological reading.
+    func detectLargeJump(
+        newValue: Decimal,
+        previousReading: Reading?,
+        currentReadingId: UUID? = nil
+    ) -> Bool {
+        guard let previousReading, previousReading.id != currentReadingId else {
             return false
         }
 
-        return newValue > latestReading.value + largeJumpThreshold
+        return newValue > previousReading.value + largeJumpThreshold
     }
 
     private func decimal(from text: String) -> Decimal? {

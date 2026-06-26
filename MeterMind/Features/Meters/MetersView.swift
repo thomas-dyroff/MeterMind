@@ -38,7 +38,7 @@ struct MetersView: View {
                     }
                 )
             }
-            .task {
+            .onAppear {
                 viewModel.loadMeters()
             }
         }
@@ -72,8 +72,7 @@ struct MetersView: View {
                         },
                         readingListViewModelFactory: {
                             viewModel.readingListViewModel(for: meter, limit: 30)
-                        },
-                        onSave: viewModel.loadMeters
+                        }
                     )
                 } label: {
                     MeterRowView(meter: meter)

@@ -109,6 +109,7 @@ enum AppStrings {
     static let validationReadingValueNumeric = LocalizedStringResource("validation.reading.value.numeric")
     static let validationReadingValueNonNegative = LocalizedStringResource("validation.reading.value.nonNegative")
     static let validationReadingValueBelowLatest = LocalizedStringResource("validation.reading.value.belowLatest")
+    static let validationReadingValueAboveNext = LocalizedStringResource("validation.reading.value.aboveNext")
     static let validationReadingLargeJump = LocalizedStringResource("validation.reading.largeJump")
     static let errorGeneric = LocalizedStringResource("error.generic")
 }

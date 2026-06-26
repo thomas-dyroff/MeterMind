@@ -6,6 +6,7 @@ enum ReadingValidationError: Error, Equatable, Identifiable {
     case nonNumericValue
     case negativeValue
     case valueBelowLatest
+    case valueAboveNext
 
     /// Stable identifier for list rendering.
     var id: String {
@@ -18,6 +19,8 @@ enum ReadingValidationError: Error, Equatable, Identifiable {
             "negativeValue"
         case .valueBelowLatest:
             "valueBelowLatest"
+        case .valueAboveNext:
+            "valueAboveNext"
         }
     }
 
@@ -32,6 +35,8 @@ enum ReadingValidationError: Error, Equatable, Identifiable {
             AppStrings.validationReadingValueNonNegative
         case .valueBelowLatest:
             AppStrings.validationReadingValueBelowLatest
+        case .valueAboveNext:
+            AppStrings.validationReadingValueAboveNext
         }
     }
 }

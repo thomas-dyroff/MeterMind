@@ -103,5 +103,6 @@
 "validation.reading.value.numeric" = "Reading value must be numeric.";
 "validation.reading.value.nonNegative" = "Reading value must be greater than or equal to 0.";
 "validation.reading.value.belowLatest" = "The new reading must not be lower than the last captured value.";
+"validation.reading.value.aboveNext" = "The reading must not be higher than the next later value.";
 "validation.reading.largeJump" = "The entered value is unusually far from the last entry.";
 "error.generic" = "The action could not be completed.";

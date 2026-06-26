@@ -40,10 +40,14 @@ final class CreateReadingViewModel: ObservableObject {
     /// Validates and persists the new reading.
     func save() {
         do {
-            let latestReading = try readingRepository.fetchLatestReading(for: meter)
-            switch validationService.validateReading(formData: formData, latestReading: latestReading) {
+            let neighbors = try chronologicalNeighbors(for: formData.date)
+            switch validationService.validateReading(
+                formData: formData,
+                previousReading: neighbors.previous,
+                nextReading: neighbors.next
+            ) {
             case .valid(let value):
-                if validationService.detectLargeJump(newValue: value, latestReading: latestReading),
+                if validationService.detectLargeJump(newValue: value, previousReading: neighbors.previous),
                    !hasConfirmedLargeJump {
                     warningMessage = AppStrings.validationReadingLargeJump
                     hasConfirmedLargeJump = true
@@ -66,6 +70,15 @@ final class CreateReadingViewModel: ObservableObject {
     func markInputChanged() {
         hasConfirmedLargeJump = false
         warningMessage = nil
+    }
+
+    private func chronologicalNeighbors(for date: Date) throws -> (previous: Reading?, next: Reading?) {
+        let readings = try readingRepository.fetchByMeter(meter)
+            .sorted { $0.date < $1.date }
+        let previousReading = readings.last { $0.date <= date }
+        let nextReading = readings.first { $0.date > date }
+
+        return (previousReading, nextReading)
     }
 
     private func resetMessages() {

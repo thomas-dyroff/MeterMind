@@ -46,16 +46,17 @@ final class EditReadingViewModel: ObservableObject {
     /// Validates and persists changes to the reading.
     func save() {
         do {
-            let latestReading = try latestComparableReading()
+            let neighbors = try chronologicalNeighbors(for: formData.date)
             switch validationService.validateReading(
                 formData: formData,
-                latestReading: latestReading,
+                previousReading: neighbors.previous,
+                nextReading: neighbors.next,
                 currentReadingId: reading.id
             ) {
             case .valid(let value):
                 if validationService.detectLargeJump(
                     newValue: value,
-                    latestReading: latestReading,
+                    previousReading: neighbors.previous,
                     currentReadingId: reading.id
                 ), !hasConfirmedLargeJump {
                     warningMessage = AppStrings.validationReadingLargeJump
@@ -81,10 +82,14 @@ final class EditReadingViewModel: ObservableObject {
         warningMessage = nil
     }
 
-    private func latestComparableReading() throws -> Reading? {
-        try readingRepository.fetchByMeter(meter).first { existingReading in
-            existingReading.id != reading.id
-        }
+    private func chronologicalNeighbors(for date: Date) throws -> (previous: Reading?, next: Reading?) {
+        let readings = try readingRepository.fetchByMeter(meter)
+            .filter { $0.id != reading.id }
+            .sorted { $0.date < $1.date }
+        let previousReading = readings.last { $0.date <= date }
+        let nextReading = readings.first { $0.date > date }
+
+        return (previousReading, nextReading)
     }
 
     private func resetMessages() {

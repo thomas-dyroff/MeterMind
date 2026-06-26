@@ -7,7 +7,6 @@ struct MeterDetailView: View {
     @ObservedObject var viewModel: MeterDetailViewModel
     let editViewModelFactory: (@escaping () -> Void) -> EditMeterViewModel?
     let readingListViewModelFactory: () -> ReadingListViewModel
-    let onSave: () -> Void
 
     @State private var isPresentingEditMeter = false
 
@@ -37,7 +36,6 @@ struct MeterDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditMeter) {
             if let editViewModel = editViewModelFactory({
-                onSave()
                 viewModel.load()
                 isPresentingEditMeter = false
             }) {

@@ -103,5 +103,6 @@
 "validation.reading.value.numeric" = "Zählerstand muss numerisch sein.";
 "validation.reading.value.nonNegative" = "Zählerstand muss größer oder gleich 0 sein.";
 "validation.reading.value.belowLatest" = "Der neue Zählerstand darf nicht kleiner als der letzte erfasste Wert sein.";
+"validation.reading.value.aboveNext" = "Der Zählerstand darf nicht größer als der nächste spätere Wert sein.";
 "validation.reading.largeJump" = "Der eingegebene Wert weicht ungewöhnlich stark vom letzten Eintrag ab.";
 "error.generic" = "Die Aktion konnte nicht abgeschlossen werden.";

@@ -39,7 +39,7 @@ struct DashboardView: View {
                     }
                 }
             }
-            .task {
+            .onAppear {
                 viewModel.loadDashboard()
             }
         }
@@ -94,9 +94,6 @@ struct DashboardView: View {
                 },
                 readingListViewModelFactory: {
                     viewModel.readingListViewModel(for: meter, limit: 30)
-                },
-                onSave: {
-                    viewModel.loadDashboard()
                 }
             )
         } else {

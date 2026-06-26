@@ -22,6 +22,34 @@ final class ReadingValidationServiceTests: XCTestCase {
         XCTAssertEqual(result, .invalid([.valueBelowLatest]))
     }
 
+    func testBackdatedValueBetweenChronologicalNeighborsIsValid() {
+        let previousReading = Reading(date: Date(timeIntervalSince1970: 100), value: 50)
+        let nextReading = Reading(date: Date(timeIntervalSince1970: 300), value: 90)
+        let formData = ReadingFormData(date: Date(timeIntervalSince1970: 200), valueText: "75")
+
+        let result = service.validateReading(
+            formData: formData,
+            previousReading: previousReading,
+            nextReading: nextReading
+        )
+
+        XCTAssertEqual(result, .valid(75))
+    }
+
+    func testBackdatedValueAboveNextReadingIsInvalid() {
+        let previousReading = Reading(date: Date(timeIntervalSince1970: 100), value: 50)
+        let nextReading = Reading(date: Date(timeIntervalSince1970: 300), value: 90)
+        let formData = ReadingFormData(date: Date(timeIntervalSince1970: 200), valueText: "95")
+
+        let result = service.validateReading(
+            formData: formData,
+            previousReading: previousReading,
+            nextReading: nextReading
+        )
+
+        XCTAssertEqual(result, .invalid([.valueAboveNext]))
+    }
+
     func testLargeJumpIsDetected() {
         let latestReading = Reading(date: .now, value: 50)
 
