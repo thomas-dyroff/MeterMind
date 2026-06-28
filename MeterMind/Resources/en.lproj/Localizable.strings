@@ -57,6 +57,30 @@
 
 "settings.title" = "Settings";
 "settings.placeholder.message" = "Settings will be added later.";
+"settings.help.title" = "Help";
+"settings.help.showIntroduction" = "View introduction";
+
+"onboarding.welcome.title" = "Welcome to MeterMind";
+"onboarding.welcome.body1" = "Track electricity, gas, water and other meter readings easily and clearly.";
+"onboarding.welcome.body2" = "Keep an eye on your consumption over time and spot trends early.";
+"onboarding.meters.title" = "Add your meters";
+"onboarding.meters.body1" = "Create as many meters as you need, such as electricity, gas, water or photovoltaic feed-in.";
+"onboarding.meters.body2" = "Each meter gets its own history and analysis.";
+"onboarding.readings.title" = "Record your readings";
+"onboarding.readings.body1" = "Enter your meter readings regularly.";
+"onboarding.readings.body2" = "Just a few entries are enough to reveal first consumption trends.";
+"onboarding.analytics.title" = "Understand your consumption";
+"onboarding.analytics.body1" = "The dashboard shows the development of each meter.";
+"onboarding.analytics.body2" = "The detail view provides charts for week, month, quarter and year.";
+"onboarding.analytics.body3" = "Your data stays on your device. No account. No tracking.";
+"onboarding.next" = "Next";
+"onboarding.skip" = "Skip";
+"onboarding.getStarted" = "Get started";
+"onboarding.progress.accessibility" = "Page %lld of %lld";
+"onboarding.welcome.illustration" = "Dashboard symbol with multiple meter cards";
+"onboarding.meters.illustration" = "Meter symbol";
+"onboarding.readings.illustration" = "Calendar and input symbol";
+"onboarding.analytics.illustration" = "Consumption charts symbol";
 
 "meter.create.title" = "Create Meter";
 "meter.edit.title" = "Edit Meter";

@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="MeterMind hilft dir, Zählerstände für Strom, Gas, Wasser und weitere Verbrauchswerte einfach zu erfassen und auszuwerten.">
+    <title>MeterMind - Zählerstände einfach erfassen</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+    <header class="site-header" aria-label="Hauptnavigation">
+      <div class="container header-shell">
+        <a class="brand" href="#top" aria-label="MeterMind Startseite">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="img">
+              <path d="M6.25 13.5 11 3.75v6.75h6.75L13 20.25V13.5H6.25Z"></path>
+            </svg>
+          </span>
+          <span>MeterMind</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Seitenbereiche">
+          <a href="#funktionen">Funktionen</a>
+          <a href="#app-store">App Store</a>
+          <a href="#kontakt">Kontakt</a>
+          <a href="#impressum">Impressum</a>
+          <a href="#datenschutz">Datenschutz</a>
+        </nav>
+
+        <a class="button button-primary header-cta" href="#app-store">App herunterladen</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section id="top" class="hero section">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Verbrauchs-Tracking für Strom, Gas & Wasser</p>
+            <h1>Zählerstände einfach erfassen. Verbrauch besser verstehen.</h1>
+            <p class="hero-text">
+              MeterMind sammelt deine Zählerstände für Strom, Gas, Wasser und weitere Verbrauchswerte, zeigt dir Entwicklungen klar an und hilft dir, Muster im Alltag schneller zu erkennen.
+            </p>
+            <div class="hero-actions" aria-label="Primäre Aktionen">
+              <a class="button button-primary" href="#app-store">Zum App Store</a>
+              <a class="button button-secondary" href="#kontakt">Feedback senden</a>
+            </div>
+          </div>
+
+          <div class="app-preview" aria-label="App-Vorschau mit Beispielwerten">
+            <div class="preview-bar">
+              <div>
+                <p class="preview-kicker">MeterMind</p>
+                <h2>Aktuelle Zählerstände</h2>
+              </div>
+              <span class="preview-pill">Live-Vorschau</span>
+            </div>
+
+            <article class="metric-card metric-strom">
+              <div class="metric-head">
+                <div class="metric-title-row">
+                  <span class="metric-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M13 2 5.8 13h5.1L10 22l8.2-12h-5.4L13 2Z"></path></svg>
+                  </span>
+                  <div>
+                    <h3>Strom</h3>
+                    <p>Zählerstand</p>
+                  </div>
+                </div>
+                <span class="trend trend-positive"><span aria-hidden="true">↓</span> -8% vs. Vormonat</span>
+              </div>
+              <div class="metric-body">
+                <p class="metric-value"><span>4.758</span> <small>kWh</small></p>
+                <svg class="sparkline" viewBox="0 0 120 42" aria-hidden="true">
+                  <path d="M4 34 C22 22, 34 28, 48 18 S78 14, 92 10 S108 12, 116 6"></path>
+                  <circle cx="116" cy="6" r="3.5"></circle>
+                </svg>
+              </div>
+              <p class="metric-meta">Letzte Eingabe: heute, 08:42</p>
+              <div class="metric-footer">
+                <span><strong>Verbrauch (Monat)</strong> 214 kWh</span>
+                <span><strong>Prognose (Jahr)</strong> 2.580 kWh</span>
+              </div>
+            </article>
+
+            <article class="metric-card metric-gas">
+              <div class="metric-head">
+                <div class="metric-title-row">
+                  <span class="metric-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12.2 22c-4 0-7.1-2.8-7.1-6.7 0-3 1.7-5 3.8-7.1C10.4 6.6 12 4.9 12 2c3.8 2.3 7 6.5 7 10.8 0 5.7-3.7 9.2-6.8 9.2Zm.2-3.2c1.8 0 3.2-1.2 3.2-3 0-1.9-1.1-3.4-2.5-4.8-.3 1.5-1.1 2.5-2 3.4-.8.8-1.4 1.5-1.4 2.4 0 1.2 1.1 2 2.7 2Z"></path></svg>
+                  </span>
+                  <div>
+                    <h3>Gas</h3>
+                    <p>Zählerstand</p>
+                  </div>
+                </div>
+                <span class="trend trend-neutral"><span aria-hidden="true">→</span> +1% vs. Vormonat</span>
+              </div>
+              <div class="metric-body">
+                <p class="metric-value"><span>12.430</span> <small>kWh</small></p>
+                <svg class="sparkline" viewBox="0 0 120 42" aria-hidden="true">
+                  <path d="M4 30 C18 18, 31 20, 42 24 S66 34, 78 22 S101 13, 116 16"></path>
+                  <circle cx="116" cy="16" r="3.5"></circle>
+                </svg>
+              </div>
+              <p class="metric-meta">Letzte Eingabe: gestern, 19:10</p>
+              <div class="metric-footer">
+                <span><strong>Verbrauch (Monat)</strong> 980 kWh</span>
+                <span><strong>Prognose (Jahr)</strong> 11.760 kWh</span>
+              </div>
+            </article>
+
+            <article class="metric-card metric-wasser">
+              <div class="metric-head">
+                <div class="metric-title-row">
+                  <span class="metric-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 1-7-7c0-4.7 5.2-10.6 6.5-12a.7.7 0 0 1 1 0C13.8 4.4 19 10.3 19 15a7 7 0 0 1-7 7Zm-3.2-6.8a3.2 3.2 0 0 0 3.2 3.2"></path></svg>
+                  </span>
+                  <div>
+                    <h3>Wasser</h3>
+                    <p>Zählerstand</p>
+                  </div>
+                </div>
+                <span class="trend trend-positive"><span aria-hidden="true">↓</span> -4% vs. Vormonat</span>
+              </div>
+              <div class="metric-body">
+                <p class="metric-value"><span>137</span> <small>m³</small></p>
+                <svg class="sparkline" viewBox="0 0 120 42" aria-hidden="true">
+                  <path d="M4 28 C16 30, 28 18, 42 21 S65 32, 78 24 S101 18, 116 12"></path>
+                  <circle cx="116" cy="12" r="3.5"></circle>
+                </svg>
+              </div>
+              <p class="metric-meta">Letzte Eingabe: 22. Juni</p>
+              <div class="metric-footer">
+                <span><strong>Verbrauch (Monat)</strong> 9,4 m³</span>
+                <span><strong>Prognose (Jahr)</strong> 112 m³</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="funktionen" class="section">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Funktionen</p>
+            <h2>Alles, was du für klare Verbrauchswerte brauchst.</h2>
+          </div>
+          <div class="feature-grid">
+            <article class="feature-card">
+              <span class="feature-icon" aria-hidden="true">01</span>
+              <h3>Mehrere Zähler verwalten</h3>
+              <p>Lege Strom-, Gas-, Wasser- und weitere Zähler getrennt an und behalte alle Werte an einem Ort.</p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-icon" aria-hidden="true">02</span>
+              <h3>Zählerstände flexibel erfassen</h3>
+              <p>Trage Werte zu beliebigen Zeitpunkten ein, auch wenn du nicht immer am Monatsende abliest.</p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-icon" aria-hidden="true">03</span>
+              <h3>Verbrauch auswerten</h3>
+              <p>Vergleiche Woche, Monat, Quartal und Jahr, damit saisonale Unterschiede sofort sichtbar werden.</p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-icon" aria-hidden="true">04</span>
+              <h3>Trends erkennen</h3>
+              <p>Badges, Vergleichswerte und Diagramme zeigen dir, ob dein Verbrauch steigt, fällt oder stabil bleibt.</p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-icon" aria-hidden="true">05</span>
+              <h3>Hochrechnung aufs Jahr</h3>
+              <p>MeterMind rechnet aktuelle Werte hoch und hilft dir, frühzeitig ein Gefühl für das Gesamtjahr zu bekommen.</p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-icon" aria-hidden="true">06</span>
+              <h3>Historie einsehen</h3>
+              <p>Die letzten Einträge bleiben schnell erreichbar, damit du Änderungen und Korrekturen nachvollziehen kannst.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="app-store" class="section section-band">
+        <div class="container app-store-grid">
+          <div>
+            <p class="eyebrow">App Store</p>
+            <h2>Demnächst im App Store</h2>
+            <p>
+              Scanne den QR-Code, sobald MeterMind im App Store verfügbar ist. Bis dahin kannst du Feedback senden und mithelfen, die App noch besser zu machen.
+            </p>
+            <a class="button button-muted" href="#" aria-disabled="true" data-disabled-link>App Store Link folgt</a>
+          </div>
+          <div class="qr-panel" aria-label="Platzhalter für App-Store-QR-Code">
+            <div class="qr-code" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <p>TODO: Apple-App-Store-Link und echten QR-Code ergänzen.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="kontakt" class="section">
+        <div class="container contact-grid">
+          <div class="contact-copy">
+            <p class="eyebrow">Kontakt & Feedback</p>
+            <h2>Fehler gefunden oder eine Idee für MeterMind?</h2>
+            <p>
+              Sende eine Fehlermeldung, einen Feature Request oder eine allgemeine Rückfrage. Die Nachricht wird aktuell nur im Browser vorbereitet und noch nicht an ein Backend übermittelt.
+            </p>
+          </div>
+
+          <form class="contact-form" id="feedbackForm" novalidate>
+            <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+            <div class="field">
+              <label for="type">Anliegen-Typ <span aria-hidden="true">*</span></label>
+              <select id="type" name="type" required>
+                <option value="">Bitte auswählen</option>
+                <option>Fehler melden</option>
+                <option>Feature Request</option>
+                <option>Allgemeine Anfrage</option>
+              </select>
+              <p class="field-error" id="type-error"></p>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" autocomplete="name">
+              </div>
+              <div class="field">
+                <label for="email">E-Mail-Adresse <span aria-hidden="true">*</span></label>
+                <input id="email" name="email" type="email" autocomplete="email" required>
+                <p class="field-error" id="email-error"></p>
+              </div>
+            </div>
+            <div class="field">
+              <label for="subject">Betreff <span aria-hidden="true">*</span></label>
+              <input id="subject" name="subject" type="text" required>
+              <p class="field-error" id="subject-error"></p>
+            </div>
+            <div class="field">
+              <label for="message">Nachricht <span aria-hidden="true">*</span></label>
+              <textarea id="message" name="message" rows="6" required></textarea>
+              <p class="field-error" id="message-error"></p>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="device">Geräte-/iOS-Version</label>
+                <input id="device" name="device" type="text" placeholder="z. B. iPhone 15, iOS 18">
+              </div>
+              <div class="field">
+                <label for="appVersion">App-Version</label>
+                <input id="appVersion" name="appVersion" type="text" placeholder="z. B. 1.0.0">
+              </div>
+            </div>
+            <div class="checkbox-field">
+              <input id="privacy" name="privacy" type="checkbox" required>
+              <label for="privacy">Ich stimme der Verarbeitung meiner Angaben gemäß <a href="#datenschutz">Datenschutzerklärung</a> zu. <span aria-hidden="true">*</span></label>
+            </div>
+            <p class="field-error" id="privacy-error"></p>
+            <button class="button button-primary" type="submit">Nachricht senden</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="impressum" class="section legal-section">
+        <div class="container legal-card">
+          <p class="eyebrow">Impressum</p>
+          <h2>Angaben gemäß § 5 TMG</h2>
+          <p><strong>TODO: Name/Firma eintragen</strong></p>
+          <p>TODO: Anschrift eintragen</p>
+          <p>E-Mail: <a href="mailto:TODO@example.com">TODO@example.com</a></p>
+          <p>Verantwortlich für den Inhalt: <strong>TODO: Verantwortliche Person eintragen</strong></p>
+          <p class="todo-note">TODO: Impressumsangaben rechtlich prüfen und durch finale Angaben ersetzen.</p>
+          <p><a href="./impressum/">Zur eigenständigen Impressumsseite</a></p>
+        </div>
+      </section>
+
+      <section id="datenschutz" class="section legal-section">
+        <div class="container legal-card">
+          <p class="eyebrow">Datenschutz</p>
+          <h2>Kurze Datenschutzhinweise</h2>
+          <p>Das Kontaktformular verarbeitet die eingegebenen Daten ausschließlich zur Bearbeitung deiner Anfrage.</p>
+          <p>MeterMind verwendet auf dieser Webseite keine Tracking-Cookies, keinen Newsletter und keine externen Tracking-Skripte.</p>
+          <p>Eine Weitergabe an Dritte erfolgt nicht, außer sie ist technisch für den Betrieb oder die Bearbeitung der Anfrage erforderlich.</p>
+          <p class="todo-note">TODO: Datenschutztexte rechtlich prüfen und an Hosting, Backend und App-Store-Prozess anpassen.</p>
+          <p><a href="./datenschutz/">Zur eigenständigen Datenschutzseite</a></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand footer-brand" href="#top" aria-label="MeterMind Startseite">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6.25 13.5 11 3.75v6.75h6.75L13 20.25V13.5H6.25Z"></path></svg>
+            </span>
+            <span>MeterMind</span>
+          </a>
+          <p>Zählerstände erfassen, Verbrauch auswerten und Entwicklungen klar verstehen.</p>
+        </div>
+        <nav aria-label="Footer Navigation">
+          <a href="#impressum">Impressum</a>
+          <a href="#datenschutz">Datenschutz</a>
+        </nav>
+        <p class="copyright">© <span id="year"></span> MeterMind. Alle Rechte vorbehalten.</p>
+      </div>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

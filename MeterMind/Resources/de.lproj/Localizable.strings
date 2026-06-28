@@ -57,6 +57,30 @@
 
 "settings.title" = "Einstellungen";
 "settings.placeholder.message" = "Einstellungen werden später ergänzt.";
+"settings.help.title" = "Hilfe";
+"settings.help.showIntroduction" = "Einführung ansehen";
+
+"onboarding.welcome.title" = "Willkommen bei MeterMind";
+"onboarding.welcome.body1" = "Erfasse Strom-, Gas-, Wasser- und weitere Zählerstände einfach und übersichtlich.";
+"onboarding.welcome.body2" = "Behalte deinen Verbrauch langfristig im Blick und erkenne Entwicklungen frühzeitig.";
+"onboarding.meters.title" = "Lege deine Zähler an";
+"onboarding.meters.body1" = "Erstelle beliebig viele Zähler – zum Beispiel für Strom, Gas, Wasser oder deine Photovoltaik-Einspeisung.";
+"onboarding.meters.body2" = "Jeder Zähler erhält seine eigene Historie und Auswertung.";
+"onboarding.readings.title" = "Erfasse deine Zählerstände";
+"onboarding.readings.body1" = "Trage deine Zählerstände regelmäßig ein.";
+"onboarding.readings.body2" = "Bereits wenige Einträge reichen aus, um erste Verbrauchstrends sichtbar zu machen.";
+"onboarding.analytics.title" = "Analysiere deinen Verbrauch";
+"onboarding.analytics.body1" = "Das Dashboard zeigt dir die Entwicklung jedes Zählers.";
+"onboarding.analytics.body2" = "In der Detailansicht findest du Diagramme für Woche, Monat, Quartal und Jahr.";
+"onboarding.analytics.body3" = "Deine Daten bleiben auf deinem Gerät. Keine Registrierung. Kein Tracking.";
+"onboarding.next" = "Weiter";
+"onboarding.skip" = "Überspringen";
+"onboarding.getStarted" = "Jetzt starten";
+"onboarding.progress.accessibility" = "Seite %lld von %lld";
+"onboarding.welcome.illustration" = "Symbol für das Dashboard mit mehreren Zählerkarten";
+"onboarding.meters.illustration" = "Symbol für einen Zähler";
+"onboarding.readings.illustration" = "Symbol für Kalender und Eingabe";
+"onboarding.analytics.illustration" = "Symbol für Verbrauchsdiagramme";
 
 "meter.create.title" = "Zähler anlegen";
 "meter.edit.title" = "Zähler bearbeiten";

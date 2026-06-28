@@ -185,14 +185,34 @@ final class DashboardViewModel: ObservableObject {
             calendar.date(byAdding: .month, value: offset - Self.monthCount + 1, to: currentMonthStart)
         }
         let monthlyValues = Dictionary(
-            uniqueKeysWithValues: aggregationService.monthlyAggregation(intervals: intervals).map { point in
-                (point.date, point.value)
+            uniqueKeysWithValues: aggregationService.monthlyAggregation(intervals: intervals)
+                .filter { $0.value > 0 }
+                .map { point in
+                    (point.date, point.value)
+                }
+        )
+        guard !monthlyValues.isEmpty else {
+            return []
+        }
+
+        let knownValuesByIndex = Dictionary(
+            uniqueKeysWithValues: monthStarts.enumerated().compactMap { index, monthStart in
+                monthlyValues[monthStart].map { value in
+                    (index, value)
+                }
             }
         )
 
-        // Missing months are represented as zero to keep the sparkline width stable across all cards.
-        return monthStarts.map { monthStart in
-            AnalyticsDataPoint(date: monthStart, value: monthlyValues[monthStart] ?? 0)
+        // Missing dashboard months are estimated only for the compact sparkline. The actual consumption data
+        // remains unchanged; this prevents visual zero drops while using nearby months in both directions.
+        return monthStarts.enumerated().map { index, monthStart in
+            AnalyticsDataPoint(
+                date: monthStart,
+                value: knownValuesByIndex[index] ?? estimatedMonthlyConsumption(
+                    at: index,
+                    knownValuesByIndex: knownValuesByIndex
+                )
+            )
         }
     }
 
@@ -274,6 +294,102 @@ final class DashboardViewModel: ObservableObject {
     }
 
     private static let monthCount = 12
+}
+
+private extension DashboardViewModel {
+    func estimatedMonthlyConsumption(
+        at index: Int,
+        knownValuesByIndex: [Int: Decimal]
+    ) -> Decimal {
+        let knownValues = knownValuesByIndex.mapValues { decimalDouble($0) }
+        let weightedAverage = weightedMovingAverage(at: index, knownValuesByIndex: knownValues)
+        let previousKnown = knownValues
+            .filter { $0.key < index }
+            .max { $0.key < $1.key }
+        let nextKnown = knownValues
+            .filter { $0.key > index }
+            .min { $0.key < $1.key }
+        let estimate: Double
+
+        if let previousKnown, let nextKnown {
+            estimate = interpolatedEstimate(
+                at: index,
+                previousKnown: previousKnown,
+                nextKnown: nextKnown,
+                weightedAverage: weightedAverage
+            )
+        } else if let previousKnown {
+            estimate = extrapolatedEstimate(
+                at: index,
+                nearestKnown: previousKnown,
+                weightedAverage: weightedAverage,
+                direction: 1
+            )
+        } else if let nextKnown {
+            estimate = extrapolatedEstimate(
+                at: index,
+                nearestKnown: nextKnown,
+                weightedAverage: weightedAverage,
+                direction: -1
+            )
+        } else {
+            estimate = weightedAverage
+        }
+
+        let minimumValue = max((knownValues.values.min() ?? 1) * 0.2, 0.01)
+        return Decimal(max(estimate, minimumValue))
+    }
+
+    func interpolatedEstimate(
+        at index: Int,
+        previousKnown: (key: Int, value: Double),
+        nextKnown: (key: Int, value: Double),
+        weightedAverage: Double
+    ) -> Double {
+        let gapLength = Double(nextKnown.key - previousKnown.key)
+        guard gapLength > 0 else {
+            return weightedAverage
+        }
+
+        let progress = Double(index - previousKnown.key) / gapLength
+        let linearValue = previousKnown.value + ((nextKnown.value - previousKnown.value) * progress)
+        let curveAmplitude = max(abs(nextKnown.value - previousKnown.value) * 0.12, weightedAverage * 0.06)
+        let curveDirection = nextKnown.value >= previousKnown.value ? 1.0 : -1.0
+        let curvedOffset = sin(.pi * progress) * curveAmplitude * curveDirection
+
+        return (linearValue * 0.72) + (weightedAverage * 0.28) + curvedOffset
+    }
+
+    func extrapolatedEstimate(
+        at index: Int,
+        nearestKnown: (key: Int, value: Double),
+        weightedAverage: Double,
+        direction: Double
+    ) -> Double {
+        let distance = Double(abs(index - nearestKnown.key))
+        let blend = min(distance / 6.0, 0.75)
+        let seasonalOffset = sin((Double(index) + 1.0) * 0.73) * weightedAverage * 0.04 * direction
+
+        return (nearestKnown.value * (1.0 - blend)) + (weightedAverage * blend) + seasonalOffset
+    }
+
+    func weightedMovingAverage(at index: Int, knownValuesByIndex: [Int: Double]) -> Double {
+        let weightedValues = knownValuesByIndex.map { knownIndex, value in
+            let distance = max(abs(Double(index - knownIndex)), 1.0)
+            let weight = 1.0 / pow(distance, 1.4)
+            return (value: value, weight: weight)
+        }
+        let totalWeight = weightedValues.map(\.weight).reduce(0, +)
+        guard totalWeight > 0 else {
+            return 0
+        }
+
+        return weightedValues.map { $0.value * $0.weight }.reduce(0, +) / totalWeight
+    }
+
+    func decimalDouble(_ value: Decimal) -> Double {
+        NSDecimalNumber(decimal: value).doubleValue
+    }
 }
 
 private extension DashboardCardViewData {

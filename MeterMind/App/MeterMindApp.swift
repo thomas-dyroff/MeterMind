@@ -21,7 +21,7 @@ struct MeterMindApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationRootView(
+            AppRootView(
                 viewModel: NavigationRootViewModel(dependencies: dependencies)
             )
             .modelContainer(modelContainer)

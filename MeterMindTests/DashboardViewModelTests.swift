@@ -28,11 +28,13 @@ final class DashboardViewModelTests: XCTestCase {
         XCTAssertEqual(values.first?.date, makeDate(year: 2025, month: 4, day: 1))
         XCTAssertEqual(values.last?.date, makeDate(year: 2026, month: 3, day: 1))
         XCTAssertEqual(values[9].value, 30)
-        XCTAssertEqual(values[10].value, 0)
+        XCTAssertGreaterThan(values[10].chartValue, 0)
+        XCTAssertNotEqual(values[10].chartValue, 40, accuracy: 0.0001)
         XCTAssertEqual(values[11].value, 50)
+        XCTAssertFalse(values.contains { $0.value <= 0 })
     }
 
-    func testMeterWithoutReadingsCreatesEmptyCard() {
+    func testMeterWithoutReadingsCreatesCardWithoutSparklineValues() {
         let meter = makeDashboardMeter()
         let viewModel = makeViewModel(meters: [meter])
 
@@ -42,8 +44,7 @@ final class DashboardViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.cards.first?.meterName, "Power")
         XCTAssertNil(viewModel.cards.first?.latestReadingValue)
         XCTAssertNil(viewModel.cards.first?.latestReadingDate)
-        XCTAssertEqual(viewModel.cards.first?.monthlyConsumptionValues.count, 12)
-        XCTAssertEqual(viewModel.cards.first?.monthlyConsumptionValues.map(\.value).reduce(0, +), 0)
+        XCTAssertTrue(viewModel.cards.first?.monthlyConsumptionValues.isEmpty == true)
     }
 
     func testMeterWithSingleReadingCreatesLatestReadingButNoConsumption() {
@@ -59,7 +60,7 @@ final class DashboardViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.cards.first?.latestReadingValue, 120)
         XCTAssertEqual(viewModel.cards.first?.latestReadingDate, reading.date)
-        XCTAssertEqual(viewModel.cards.first?.monthlyConsumptionValues.map(\.value).reduce(0, +), 0)
+        XCTAssertTrue(viewModel.cards.first?.monthlyConsumptionValues.isEmpty == true)
     }
 
     func testMeterWithMultipleMonthsHistoryAggregatesConsumption() {
@@ -75,9 +76,36 @@ final class DashboardViewModelTests: XCTestCase {
 
         let monthlyValues = viewModel.cards.first?.monthlyConsumptionValues.map(\.value)
         XCTAssertEqual(viewModel.cards.first?.latestReadingValue, 170)
-        XCTAssertEqual(monthlyValues?[9], 0)
+        XCTAssertNotEqual(monthlyValues?[9], 0)
         XCTAssertEqual(monthlyValues?[10], 30)
         XCTAssertEqual(monthlyValues?[11], 40)
+    }
+
+    func testDashboardSparklineEstimatesMissingMonthsWithoutZeroDrops() {
+        let meter = makeDashboardMeter()
+        let viewModel = makeViewModel(meters: [meter])
+        let intervals = [
+            dashboardInterval(
+                meter: meter,
+                date: makeDate(year: 2026, month: 1, day: 15),
+                value: 24
+            ),
+            dashboardInterval(
+                meter: meter,
+                date: makeDate(year: 2026, month: 4, day: 15),
+                value: 60
+            )
+        ]
+
+        let values = viewModel.monthlyConsumptionLast12Months(
+            intervals: intervals,
+            referenceDate: makeDate(year: 2026, month: 4, day: 20)
+        )
+
+        XCTAssertEqual(values.count, 12)
+        XCTAssertFalse(values.contains { $0.value <= 0 })
+        XCTAssertEqual(values[8].value, 24)
+        XCTAssertEqual(values[11].value, 60)
     }
 
     func testDashboardSortsByDashboardSortOrder() {
