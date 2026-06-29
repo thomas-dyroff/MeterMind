@@ -23,6 +23,12 @@ struct DashboardCardViewData: Identifiable {
     /// Latest captured reading date, if available.
     let latestReadingDate: Date?
 
+    /// Consumption between the latest two readings.
+    let latestConsumptionValue: Decimal?
+
+    /// Trend compared with the previous consumption period.
+    let latestTrend: PeriodComparison?
+
     /// Unit used by this meter.
     let unit: String
 

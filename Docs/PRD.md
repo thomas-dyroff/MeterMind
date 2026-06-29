@@ -404,3 +404,297 @@ Das Onboarding gilt als erfolgreich, wenn:
 * der erste Zählerstand ohne zusätzliche Hilfe erfasst werden kann,
 * der Nutzer den Zusammenhang zwischen Dashboard und Detailansicht versteht,
 * keine Premium-Funktion erklärt wird, bevor sie tatsächlich relevant ist.
+
+
+
+# 12. Produkt-Roadmap
+
+## Zielsetzung
+
+Die Entwicklung von MeterMind erfolgt iterativ in mehreren Versionen. Jede Version erweitert die App um klar abgegrenzte Funktionen, ohne die Einfachheit der Bedienung zu beeinträchtigen.
+
+Die Roadmap orientiert sich an folgenden Grundsätzen:
+
+* **Einfachheit vor Funktionsvielfalt**
+* **Hoher Nutzermehrwert**
+* **Tiefe Integration in iOS**
+* **Datenschutz und lokale Verarbeitung**
+* **Premium-Funktionen bieten Komfort statt Einschränkungen**
+
+Neue Funktionen dürfen die Kernidee der App – die schnelle und unkomplizierte Erfassung und Analyse von Zählerständen – nicht beeinträchtigen.
+
+---
+
+# Version 1.1 – Komfort & Produktivität
+
+## OCR-Zählererkennung (Premium)
+
+Nutzer können den Zähler fotografieren. Mithilfe des Apple Vision Frameworks wird der Zählerstand vollständig lokal auf dem Gerät erkannt.
+
+Der erkannte Wert wird hervorgehoben und kann vor dem Speichern überprüft oder korrigiert werden.
+
+Unterstützt werden:
+
+* Stromzähler
+* Gaszähler
+* Wasserzähler
+
+Optional kann die Erkennung von Nachkommastellen aktiviert werden.
+
+**Nutzen**
+
+* deutlich schnellere Erfassung
+* modernes Nutzungserlebnis
+* keine Cloud-Verarbeitung
+
+---
+
+## Schnellerfassung (Free)
+
+Direkt nach dem Start der App oder über den Schnellzugriff kann eine reduzierte Eingabemaske geöffnet werden.
+
+Ablauf:
+
+1. Zähler auswählen
+2. Wert eingeben oder per OCR übernehmen
+3. Speichern
+
+Keine weiteren Dialoge.
+
+**Nutzen**
+
+* Erfassung innerhalb weniger Sekunden
+
+---
+
+## Interaktive Dashboard-Karten (Free)
+
+Die Dashboard-Karten werden erweitert.
+
+Zusätzlich zu den bestehenden Informationen zeigen sie:
+
+* aktuellen Zählerstand
+* letzte Erfassung
+* Verbrauch seit letzter Ablesung
+* Trendindikator
+
+Ein Tap öffnet weiterhin die Detailansicht des jeweiligen Zählers.
+
+**Nutzen**
+
+* schneller Überblick
+* weniger Navigation
+* höhere Informationsdichte
+
+---
+
+# Version 1.2 – Analyse
+
+## Apple-Health-ähnliche Diagramme (Free)
+
+Die Diagramme werden modernisiert.
+
+Neue Funktionen:
+
+* sanfte Animationen
+* Pinch-to-Zoom
+* Auswahl einzelner Datenpunkte
+* Tooltip mit Messwert
+* optionaler Wechsel zwischen Balken- und Linienansicht
+
+**Nutzen**
+
+* deutlich bessere Interpretation der Verbrauchsdaten
+
+---
+
+## Intelligente Verbrauchsinsights (Premium)
+
+MeterMind analysiert Verbrauchsdaten automatisch.
+
+Beispiele:
+
+* „12 % weniger Wasser als im Vormonat“
+* „Höchster Stromverbrauch seit Januar“
+* „Gasverbrauch unter dem Jahresdurchschnitt“
+
+Es wird keine generative KI verwendet.
+
+Alle Berechnungen erfolgen lokal.
+
+**Nutzen**
+
+* zusätzlicher Mehrwert ohne Mehraufwand für den Nutzer
+
+---
+
+## Verbrauchsziele (Premium)
+
+Für jeden Zähler können Jahresziele definiert werden.
+
+Beispiele:
+
+* 2.500 kWh Strom
+* 110 m³ Wasser
+
+Das Dashboard zeigt:
+
+* aktuellen Fortschritt
+* verbleibendes Budget
+* Prognose zum Jahresende
+
+**Nutzen**
+
+* Motivation zum Energiesparen
+* bessere Kontrolle der Verbrauchsentwicklung
+
+---
+
+# Version 1.3 – iOS Integration
+
+## Widgets (Premium)
+
+Home-Screen-Widgets in drei Größen.
+
+Anzeige:
+
+* aktueller Verbrauch
+* letzte Erfassung
+* nächste Erinnerung
+
+Ein Tap öffnet direkt den entsprechenden Zähler.
+
+---
+
+## Live Activities & Dynamic Island (Premium)
+
+Während einer aktiven Erfassung oder bei fälligen Erinnerungen können Informationen auf Sperrbildschirm und Dynamic Island dargestellt werden.
+
+---
+
+## Flexible Erinnerungen (Free)
+
+Erinnerungen können flexibel konfiguriert werden.
+
+Unterstützt werden:
+
+* monatlich
+* quartalsweise
+* jährlich
+* nach Zeitraum seit letzter Erfassung
+* Monatsende
+
+Optional:
+
+* intelligente Erinnerung bei unregelmäßiger Nutzung
+
+---
+
+# Version 1.4 – Berichte & Automatisierung
+
+## Jahreszusammenfassung (Premium)
+
+Automatisch erzeugter Jahresbericht.
+
+Inhalte:
+
+* Verbrauch
+* Kosten
+* Trends
+* Einsparungen
+* Vergleich zum Vorjahr
+
+Export als PDF.
+
+---
+
+## Apple Intelligence / Kurzbefehle (Premium)
+
+Integration in die Kurzbefehle-App.
+
+Beispiele:
+
+* neuen Stromzählerstand erfassen
+* aktuellen Wasserverbrauch anzeigen
+* Monatsbericht exportieren
+
+Ziel ist die nahtlose Einbindung in iOS-Automationen.
+
+---
+
+## Lock-Screen Widgets (Premium)
+
+Kompakte Widgets für den Sperrbildschirm.
+
+Anzeige:
+
+* aktueller Verbrauch
+* nächste Erinnerung
+
+---
+
+# Version 1.5 – Intelligente Analysen
+
+## Verbrauchsprognose 2.0 (Premium)
+
+Erweiterte Prognose unter Berücksichtigung:
+
+* historischer Daten
+* saisonaler Schwankungen
+* bisherigem Jahresverlauf
+
+Die Prognose zeigt zusätzlich einen Unsicherheitsbereich.
+
+---
+
+## Anomalie-Erkennung (Premium)
+
+Automatische Erkennung ungewöhnlicher Verbrauchsänderungen.
+
+Beispiele:
+
+* Wasserleck
+* ungewöhnlich hoher Stromverbrauch
+* ungewöhnlich niedriger Gasverbrauch
+
+Schwellwerte können individuell angepasst werden.
+
+---
+
+## Erweiterter Export (Premium)
+
+Unterstützte Formate:
+
+* CSV
+* Excel
+* PDF
+
+Der Nutzer kann auswählen:
+
+* einzelne Zähler
+* mehrere Zähler
+* beliebige Zeiträume
+
+Diagramme werden in den Export integriert.
+
+---
+
+# Priorisierungsstrategie
+
+Die Umsetzung neuer Funktionen erfolgt nach folgenden Kriterien:
+
+1. Nutzen für möglichst viele Anwender
+2. Einhaltung der einfachen Bedienbarkeit
+3. Integration in bestehende Workflows
+4. Tiefe Integration in das Apple-Ökosystem
+5. Lokale Verarbeitung und Datenschutz
+
+Funktionen, die den Bedienaufwand erhöhen oder die App unnötig komplex machen, werden grundsätzlich zurückgestellt oder verworfen.
+
+---
+
+# Langfristige Produktvision
+
+MeterMind soll sich zu einer modernen, datenschutzfreundlichen iOS-Anwendung entwickeln, die Privathaushalten hilft, ihren Energie- und Ressourcenverbrauch nachhaltig zu verstehen und zu optimieren.
+
+Dabei bleibt der Fokus bewusst auf einer nativen Apple-Erfahrung mit klarer Benutzerführung, hoher Performance und lokaler Datenverarbeitung. Die App soll kein Smart-Home-System ersetzen, sondern die einfachste und hochwertigste Lösung für die manuelle Erfassung und Analyse von Zählerständen im Apple-Ökosystem sein.

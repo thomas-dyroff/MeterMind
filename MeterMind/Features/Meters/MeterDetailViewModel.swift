@@ -10,6 +10,15 @@ final class MeterDetailViewModel: ObservableObject {
     @Published private(set) var latestReadingDate: Date?
     @Published private(set) var recentReadings: [Reading] = []
     @Published private(set) var chartSections: [MeterConsumptionChartViewData] = []
+    @Published private(set) var monthlyTrendPoints: [MeterConsumptionChartDataPoint] = []
+    @Published private(set) var yearlyComparisonPoints: [MeterConsumptionChartDataPoint] = []
+    @Published private(set) var yearlyJourneyItems: [MonthlyJourneyItem] = []
+    @Published private(set) var summaryItems: [MeterSummaryItem] = []
+    @Published private(set) var insightText: String?
+    @Published private(set) var primaryConsumptionValue: Decimal?
+    @Published private(set) var currentYearConsumptionValue: Decimal?
+    @Published private(set) var totalConsumptionValue: Decimal?
+    @Published private(set) var primaryComparison: PeriodComparison?
     @Published var errorMessage: LocalizedStringResource?
 
     let meterId: UUID
@@ -18,6 +27,7 @@ final class MeterDetailViewModel: ObservableObject {
     private let readingRepository: ReadingRepositoryProtocol?
     private let consumptionService: ConsumptionService
     private let aggregationService: AggregationService
+    private let statisticsService: MeterStatisticsService
     private let calendar: Calendar
 
     private static let historyLimit = 30
@@ -74,6 +84,7 @@ final class MeterDetailViewModel: ObservableObject {
         self.readingRepository = nil
         self.consumptionService = ConsumptionService()
         self.aggregationService = AggregationService()
+        self.statisticsService = MeterStatisticsService()
         self.calendar = .current
     }
 
@@ -83,6 +94,7 @@ final class MeterDetailViewModel: ObservableObject {
         readingRepository: ReadingRepositoryProtocol,
         consumptionService: ConsumptionService = ConsumptionService(),
         aggregationService: AggregationService = AggregationService(),
+        statisticsService: MeterStatisticsService? = nil,
         calendar: Calendar = .current
     ) {
         self.meterId = meterId
@@ -90,6 +102,7 @@ final class MeterDetailViewModel: ObservableObject {
         self.readingRepository = readingRepository
         self.consumptionService = consumptionService
         self.aggregationService = aggregationService
+        self.statisticsService = statisticsService ?? MeterStatisticsService(calendar: calendar)
         self.calendar = calendar
     }
 
@@ -110,6 +123,9 @@ final class MeterDetailViewModel: ObservableObject {
             let readings = try readingRepository.fetchByMeter(loadedMeter)
             let sortedReadings = readings.sorted { $0.date > $1.date }
             let intervals = consumptionService.calculateConsumption(readings: readings, meter: loadedMeter)
+            let monthlyConsumption = statisticsService.monthlyConsumption(intervals: intervals)
+            let yearlyConsumption = statisticsService.yearlyConsumption(intervals: intervals)
+            let unit = MeterUnit.symbol(for: loadedMeter.unit)
 
             meter = loadedMeter
             latestReadingValue = sortedReadings.first?.value
@@ -117,13 +133,93 @@ final class MeterDetailViewModel: ObservableObject {
             recentReadings = Array(sortedReadings.prefix(Self.historyLimit))
             chartSections = makeChartSections(
                 intervals: intervals,
-                unit: MeterUnit.symbol(for: loadedMeter.unit),
+                unit: unit,
                 referenceDate: referenceDate
+            )
+            monthlyTrendPoints = monthlyConsumption.map { point in
+                MeterConsumptionChartDataPoint(
+                    date: point.date,
+                    value: point.value,
+                    label: point.date.formatted(.dateTime.month(.abbreviated).year())
+                )
+            }
+            yearlyComparisonPoints = yearlyConsumption.map { point in
+                MeterConsumptionChartDataPoint(
+                    date: point.date,
+                    value: point.value,
+                    label: point.date.formatted(.dateTime.year())
+                )
+            }
+            yearlyJourneyItems = statisticsService.yearlyJourney(
+                monthlyPoints: monthlyConsumption,
+                referenceDate: referenceDate
+            )
+            primaryConsumptionValue = monthlyConsumption.last?.value
+            currentYearConsumptionValue = yearlyConsumption.last?.value
+            totalConsumptionValue = monthlyConsumption.map(\.value).reduce(0, +)
+            primaryComparison = statisticsService.previousPeriodComparison(points: monthlyConsumption)
+            summaryItems = makeSummaryItems(
+                summary: statisticsService.summary(readings: readings, monthlyPoints: monthlyConsumption),
+                unit: unit
+            )
+            insightText = insightDisplayText(
+                statisticsService.generateInsight(
+                    monthlyPoints: monthlyConsumption,
+                    readings: readings,
+                    referenceDate: referenceDate
+                )
             )
             errorMessage = nil
         } catch {
             errorMessage = AppStrings.errorGeneric
         }
+    }
+
+    var primaryConsumptionText: String {
+        focusConsumptionText(for: .month)
+    }
+
+    func focusConsumptionText(for period: MeterDetailFocusPeriod) -> String {
+        let value: Decimal?
+        switch period {
+        case .month:
+            value = primaryConsumptionValue
+        case .year:
+            value = currentYearConsumptionValue
+        case .total:
+            value = totalConsumptionValue
+        }
+
+        guard let value else {
+            return String(localized: AppStrings.dashboardNoReadingValue)
+        }
+
+        return "\(AnalyticsFormatters.decimalString(for: value)) \(unit)"
+    }
+
+    func focusSubtitle(for period: MeterDetailFocusPeriod) -> LocalizedStringResource {
+        switch period {
+        case .month:
+            AppStrings.meterDetailMainConsumptionMonth
+        case .year:
+            AppStrings.meterDetailMainConsumptionYear
+        case .total:
+            AppStrings.meterDetailMainConsumptionTotal
+        }
+    }
+
+    var primaryComparisonText: String? {
+        guard primaryConsumptionValue != nil else {
+            return nil
+        }
+
+        guard let primaryComparison else {
+            return nil
+        }
+
+        let direction = primaryComparison.isDecrease ? "↓" : "↑"
+        let value = AnalyticsFormatters.decimalString(for: abs(primaryComparison.percentageDelta))
+        return String(format: String(localized: AppStrings.meterDetailMainComparison), direction, value)
     }
 
     /// Creates an edit-meter view model.
@@ -305,5 +401,49 @@ final class MeterDetailViewModel: ObservableObject {
 
     private func monthStart(for date: Date) -> Date {
         calendar.dateInterval(of: .month, for: date)?.start ?? date
+    }
+
+    private func makeSummaryItems(summary: MeterStatisticsSummary, unit: String) -> [MeterSummaryItem] {
+        [
+            MeterSummaryItem(
+                id: "average",
+                title: AppStrings.meterDetailSummaryAverage,
+                value: summary.average.map { "\(AnalyticsFormatters.decimalString(for: $0)) \(unit)" }
+                    ?? String(localized: AppStrings.dashboardNoReadingValue)
+            ),
+            MeterSummaryItem(
+                id: "highest",
+                title: AppStrings.meterDetailSummaryHighest,
+                value: summary.highestMonth ?? String(localized: AppStrings.dashboardNoReadingValue)
+            ),
+            MeterSummaryItem(
+                id: "lowest",
+                title: AppStrings.meterDetailSummaryLowest,
+                value: summary.lowestMonth ?? String(localized: AppStrings.dashboardNoReadingValue)
+            ),
+            MeterSummaryItem(
+                id: "readings",
+                title: AppStrings.meterDetailSummaryReadings,
+                value: "\(summary.readingCount)"
+            )
+        ]
+    }
+
+    private func insightDisplayText(_ insight: MeterInsight) -> String? {
+        switch insight {
+        case .lowerThanPrevious(let percentage):
+            return String(
+                format: String(localized: AppStrings.meterDetailInsightLowerConsumption),
+                AnalyticsFormatters.decimalString(for: percentage)
+            )
+        case .lowestConsumption:
+            return String(localized: AppStrings.meterDetailInsightLowestConsumption)
+        case .needsMoreReadings:
+            return String(localized: AppStrings.meterDetailInsightNeedsMoreReadings)
+        case .staleReading(let days):
+            return String(format: String(localized: AppStrings.meterDetailInsightStaleReading), days)
+        case .none:
+            return nil
+        }
     }
 }

@@ -15,6 +15,7 @@ final class DashboardViewModel: ObservableObject {
     private let readingRepository: ReadingRepositoryProtocol
     private let consumptionService: ConsumptionService
     private let aggregationService: AggregationService
+    private let statisticsService: MeterStatisticsService
     private let readingValidationService: ReadingValidationService
     private let calendar: Calendar
 
@@ -25,6 +26,7 @@ final class DashboardViewModel: ObservableObject {
         self.readingRepository = dependencies.repositories.readingRepository
         self.consumptionService = dependencies.services.consumptionService
         self.aggregationService = dependencies.services.aggregationService
+        self.statisticsService = MeterStatisticsService()
         self.readingValidationService = dependencies.services.readingValidationService
         self.calendar = .current
     }
@@ -34,6 +36,7 @@ final class DashboardViewModel: ObservableObject {
         readingRepository: ReadingRepositoryProtocol,
         consumptionService: ConsumptionService = ConsumptionService(),
         aggregationService: AggregationService = AggregationService(),
+        statisticsService: MeterStatisticsService? = nil,
         readingValidationService: ReadingValidationService = ReadingValidationService(),
         calendar: Calendar = .current
     ) {
@@ -41,6 +44,7 @@ final class DashboardViewModel: ObservableObject {
         self.readingRepository = readingRepository
         self.consumptionService = consumptionService
         self.aggregationService = aggregationService
+        self.statisticsService = statisticsService ?? MeterStatisticsService(calendar: calendar)
         self.readingValidationService = readingValidationService
         self.calendar = calendar
     }
@@ -220,6 +224,12 @@ final class DashboardViewModel: ObservableObject {
         let readings = try readingRepository.fetchByMeter(meter)
         let latestReading = readings.sorted { $0.date > $1.date }.first
         let intervals = consumptionService.calculateConsumption(readings: readings, meter: meter)
+        let validIntervals = intervals.filter { $0.value >= 0 }
+        let sortedIntervals = validIntervals.sorted { $0.endDate < $1.endDate }
+        let latestConsumption = sortedIntervals.last?.value
+        let trend = statisticsService.previousPeriodComparison(
+            points: sortedIntervals.map { AnalyticsDataPoint(date: $0.endDate, value: $0.value) }
+        )
 
         return DashboardCardViewData(
             meterId: meter.id,
@@ -229,11 +239,13 @@ final class DashboardViewModel: ObservableObject {
             iconColor: iconColor(for: meter.type),
             latestReadingValue: latestReading?.value,
             latestReadingDate: latestReading?.date,
+            latestConsumptionValue: latestConsumption,
+            latestTrend: trend,
             unit: MeterUnit.symbol(for: meter.unit),
             dashboardSortOrder: meter.dashboardSortOrder,
             isVisibleOnDashboard: meter.isVisibleOnDashboard,
             monthlyConsumptionValues: monthlyConsumptionLast12Months(
-                intervals: intervals,
+                intervals: validIntervals,
                 referenceDate: referenceDate
             )
         )
@@ -251,8 +263,10 @@ final class DashboardViewModel: ObservableObject {
 
     private func iconName(for type: MeterType) -> String {
         switch type {
-        case .electricityImport, .pvFeedIn:
+        case .electricityImport:
             "bolt.fill"
+        case .pvFeedIn:
+            "sun.max.fill"
         case .gas:
             "flame.fill"
         case .water:
@@ -405,6 +419,8 @@ private extension DashboardCardViewData {
             iconColor: iconColor,
             latestReadingValue: latestReadingValue,
             latestReadingDate: latestReadingDate,
+            latestConsumptionValue: latestConsumptionValue,
+            latestTrend: latestTrend,
             unit: unit,
             dashboardSortOrder: dashboardSortOrder,
             isVisibleOnDashboard: isVisibleOnDashboard,
